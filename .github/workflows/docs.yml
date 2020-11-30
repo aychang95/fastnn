@@ -19,5 +19,5 @@ jobs:
         with:
           poetry-version: 1.1.4
       - name: Set up FastNN
-      - run: poetry shell
-      - run: mkdocs gh-deploy --force
+        run: poetry shell
+        run: mkdocs gh-deploy --force
