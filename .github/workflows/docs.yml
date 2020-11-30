@@ -23,6 +23,7 @@ jobs:
       - name: Set up FastNN dependencies
         run: |
           poetry install -E docs
-          sh ./scripts/install_triton_client.sh
+          pip install nvidia-pyindex
+          pip install tritonclient[all]
       - name: Deploy docs
         run: poetry run mkdocs gh-deploy --force
