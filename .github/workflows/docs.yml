@@ -23,4 +23,4 @@ jobs:
       - name: Set up FastNN dependencies
         run: poetry install
       - name: Deploy docs
-        run: mkdocs gh-deploy --force
+        run: poetry run mkdocs gh-deploy --force
