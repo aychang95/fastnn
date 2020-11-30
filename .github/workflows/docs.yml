@@ -21,7 +21,8 @@ jobs:
       - name: Set up Poetry env
         run: poetry env use python3.8
       - name: Set up FastNN dependencies
-        run: poetry install -E docs
-        run: sh ./scripts/install_triton_client.sh
+        run: |
+          poetry install -E docs
+          sh ./scripts/install_triton_client.sh
       - name: Deploy docs
         run: poetry run mkdocs gh-deploy --force
