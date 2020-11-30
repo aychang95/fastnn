@@ -1,18 +1,23 @@
-name: CI
+name: Documentation
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  deploy:
+  deploy-docs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
           python-version: 3.x
-      - run: pip install mkdocs-material
-      - run: pip install mkautodoc
+      - name: Run image
+      - uses: abatilo/actions-poetry@v2.1.0
+        with:
+          poetry-version: 1.1.4
+      - name: Set up FastNN
+      - run: poetry shell
       - run: mkdocs gh-deploy --force
