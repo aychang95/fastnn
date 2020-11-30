@@ -1,0 +1,48 @@
+site_name: FastNN
+site_description: Fast Neural Networks - A framework for deploying serializable and optimizable neural net models at scale in production via. the NVIDIA Triton Inference Server.
+site_url: https://github.com/aychang95/fastnn
+
+theme:
+  name: 'material'
+  palette:
+    primary: 'light-green'
+    accent: 'indigo'
+  logo: ""
+  favicon: ""
+
+use_directory_urls: false
+repo_name: aychang95/fastnn
+repo_url: https://github.com/aychang95/fastnn
+edit_uri: ''
+
+nav:
+  - FastNN Overview: 'index.md'
+  - Data Processing: 'data_processing.md'
+  - Exporting Models: 'model_exporting.md'
+  - Model Zoo: 'model_zoo.md'
+  - Model Deployment: 'model_deployment.md'
+  - Inference Client: 'inference_client.md'
+  - API Reference:
+      - Processor: 'api-reference/processor.md'
+      - FastNN Modules: 'api-reference/fastnn_modules.md'
+      - Exporter: 'api-reference/exporter.md'
+      - FastNN Client: 'api-reference/fastnn_client.md'
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - markdown.extensions.codehilite:
+      guess_lang: false
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.tabbed
+  - pymdownx.details
+  - pymdownx.superfences
+  - admonition
+  - codehilite
+  - mkautodoc
+  - extra
+
+extra_css:
+  - css/autodoc.css

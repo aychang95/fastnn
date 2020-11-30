@@ -1,0 +1,38 @@
+name: "fasterrcnn-resnet50-cpu"
+platform: "pytorch_libtorch"
+input [
+  {
+    name: "input__0"
+    data_type: TYPE_FP32
+    dims: [3, -1, -1]
+  }
+]
+output [
+  {
+    name: "output__0"
+    data_type: TYPE_FP32
+    dims: [-1, 4]
+  },
+  {
+    name: "output__1"
+    data_type: TYPE_INT64
+    dims: [-1]
+  },
+  {
+    name: "output__2"
+    data_type: TYPE_FP32
+    dims: [-1]
+  }
+]
+
+instance_group [
+  {
+    count: 2
+    kind: KIND_CPU
+  }
+]
+
+version_policy: { latest { num_versions : 1 }}
+optimization {
+  graph { level: 1 }
+}

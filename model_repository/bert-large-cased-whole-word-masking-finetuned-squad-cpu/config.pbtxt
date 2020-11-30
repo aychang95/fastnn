@@ -1,0 +1,67 @@
+name: "bert-large-cased-whole-word-masking-finetuned-squad-cpu"
+platform: "pytorch_libtorch"
+max_batch_size: 64
+input [
+  {
+    name: "input__0"
+    data_type: TYPE_INT64
+    dims: [512]
+  },
+  {
+    name: "input__1"
+    data_type: TYPE_INT64
+    dims: [512]
+  },
+  {
+    name: "input__2"
+    data_type: TYPE_INT64
+    dims: [512]
+  },
+  {
+    name: "input__3"
+    data_type: TYPE_INT64
+    dims: [1]
+  },
+  {
+    name: "input__4"
+    data_type: TYPE_INT64
+    dims: [1]
+  },
+  {
+    name: "input__5"
+    data_type: TYPE_FP32
+    dims: [512]
+  }
+]
+output [
+  {
+    name: "output__0"
+    data_type: TYPE_FP32
+    dims: [512]
+  },
+  {
+    name: "output__1"
+    data_type: TYPE_FP32
+    dims: [512]
+  },
+  {
+    name: "output__2"
+    data_type: TYPE_INT64
+    dims: [1]
+  }
+]
+instance_group [
+  {
+    count: 1
+    kind: KIND_CPU
+  }
+]
+dynamic_batching {
+  preferred_batch_size: [ 1,2,4,8,16,32,64 ]
+  max_queue_delay_microseconds: 30000
+
+}
+version_policy: { latest { num_versions : 1 }}
+optimization {
+  graph { level: 1 }
+}
