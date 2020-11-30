@@ -19,11 +19,11 @@ jobs:
         with:
           poetry-version: 1.1.4
       - name: Set up Poetry env
-        run: poetry shell
+        run: poetry env use python3.8
       - name: Set up FastNN dependencies
         run: |
-          poetry update
-          pip install nvidia-pyindex
-          pip install tritonclient[all]
+          poetry update -E docs
+          poetry run pip install nvidia-pyindex
+          poetry run pip install tritonclient[all]
       - name: Deploy docs
         run: poetry run mkdocs gh-deploy --force
