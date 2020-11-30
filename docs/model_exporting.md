@@ -1,6 +1,6 @@
 # Export Pytorch Model to TorchScript Module 
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aychang95/fastnn/blob/master/notebooks/model_exporting.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aychang95/fastnn/blob/main/notebooks/model_exporting.ipynb)
 
 
 ## *Available Modules for Exporting*

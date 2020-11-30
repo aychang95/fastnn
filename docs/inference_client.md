@@ -1,6 +1,6 @@
 # Send Requests to Triton Inference Server with FastNN Client 
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aychang95/fastnn/blob/master/notebooks/inference_client.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aychang95/fastnn/blob/main/notebooks/inference_client.ipynb)
 
 
 # Examples:

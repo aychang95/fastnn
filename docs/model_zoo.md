@@ -1,6 +1,6 @@
 # Model Zoo
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aychang95/fastnn/blob/master/notebooks/model_zoo.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aychang95/fastnn/blob/main/notebooks/model_zoo.ipynb)
 
 ## Available Serialized Models
 
