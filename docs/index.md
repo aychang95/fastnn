@@ -15,21 +15,21 @@ A framework for deploying serializable and optimizable neural net models at scal
             
                 === "CUDA 10.2"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:0.0.1-cuda10.2-runtime-ubuntu18.04-py3.7`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.0.1-cuda10.2-runtime-ubuntu18.04-py3.7`
     
                 === "CUDA 11.0"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:0.0.1-cuda11.0-runtime-ubuntu18.04-py3.7`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.0.1-cuda11.0-runtime-ubuntu18.04-py3.7`
     
             === "Python 3.8"
     
                 === "CUDA 10.2"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:0.0.1-cuda10.2-runtime-ubuntu18.04-py3.8`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.0.1-cuda10.2-runtime-ubuntu18.04-py3.8`
     
                 === "CUDA 11.0"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:0.0.1-cuda11.0-runtime-ubuntu18.04-py3.8`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.0.1-cuda11.0-runtime-ubuntu18.04-py3.8`
     
         === "Development"
     
@@ -37,21 +37,21 @@ A framework for deploying serializable and optimizable neural net models at scal
             
                 === "CUDA 10.2"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:0.0.1-cuda10.2-devel-ubuntu18.04-py3.7`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.0.1-cuda10.2-devel-ubuntu18.04-py3.7`
     
                 === "CUDA 11.0"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:0.0.1-cuda11.0-devel-ubuntu18.04-py3.7`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.0.1-cuda11.0-devel-ubuntu18.04-py3.7`
     
             === "Python 3.8"
     
                 === "CUDA 10.2"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:0.0.1-cuda10.2-devel-ubuntu18.04-py3.8`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.0.1-cuda10.2-devel-ubuntu18.04-py3.8`
     
                 === "CUDA 11.0"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:0.0.1-cuda11.0-devel-ubuntu18.04-py3.8`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.0.1-cuda11.0-devel-ubuntu18.04-py3.8`
     
     === "Nightly"
     
