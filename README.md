@@ -57,12 +57,12 @@ Optional: CUDA Compatible GPU, NVIDIA Drivers, cudnn (PyTorch pre-built wheels)
 
 2. The tritonclient package wheels are not hosted on the public PyPI server. We need to add the address of NVIDA's private python package index to the environment. You can complete these steps and install the tritonclient package by running the following.
 
-    ```sh
-    # If you cloned this repo, you can just uncomment and run the one line below
-    #sh ./scripts/install_triton_client.
-    pip install nvidia-pyindex
-    pip install tritonclient[all]
-    ```
+```sh
+# If you cloned this repo, you can just uncomment and run the one line below
+#sh ./scripts/install_triton_client.
+pip install nvidia-pyindex
+pip install tritonclient[all]
+```
 
 ### **Install via. pip**
 
