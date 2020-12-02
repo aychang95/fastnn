@@ -61,21 +61,21 @@ A framework for deploying serializable and optimizable neural net models at scal
             
                 === "CUDA 10.2"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:latest-cuda10.2-runtime-ubuntu18.04-py3.7`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda10.2-runtime-ubuntu18.04-py3.7`
     
                 === "CUDA 11.0"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:latest-cuda11.0-runtime-ubuntu18.04-py3.7`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.0-runtime-ubuntu18.04-py3.7`
     
             === "Python 3.8"
     
                 === "CUDA 10.2"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:latest-cuda10.2-runtime-ubuntu18.04-py3.8`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda10.2-runtime-ubuntu18.04-py3.8`
     
                 === "CUDA 11.0"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:latest-cuda11.0-runtime-ubuntu18.04-py3.8`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.0-runtime-ubuntu18.04-py3.8`
     
         === "Development"
     
@@ -83,26 +83,26 @@ A framework for deploying serializable and optimizable neural net models at scal
             
                 === "CUDA 10.2"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:latest-cuda10.2-devel-ubuntu18.04-py3.7`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda10.2-devel-ubuntu18.04-py3.7`
     
                 === "CUDA 11.0"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:latest-cuda11.0-devel-ubuntu18.04-py3.7`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.0-devel-ubuntu18.04-py3.7`
     
             === "Python 3.8"
     
                 === "CUDA 10.2"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:latest-cuda10.2-devel-ubuntu18.04-py3.8`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda10.2-devel-ubuntu18.04-py3.8`
     
                 === "CUDA 11.0"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:latest-cuda11.0-devel-ubuntu18.04-py3.8`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.0-devel-ubuntu18.04-py3.8`
 
 
 
 
-## [Documentation](https://aychang95.github.com/fastnn) - Guides, Models, API References
+## [Documentation](https://andrewchang.dev/fastnn) - Guides, Models, API References
 
 ## Features:
   - **Data Processing**
@@ -142,32 +142,68 @@ git lfs pull
 ```
 
 
-## Quickstart:
+## Quickstart and Installation:
+
+### *Pre-requisites:*
+
+Requirements: Python 3.7+, PyTorch 1+, TorchVision 0.7+, Triton Client
+
+Optional: CUDA Compatible GPU, NVIDIA Drivers, cudnn (PyTorch pre-built wheels)
+
+1. To install PyTorch with TorchVision, please refer to the installation instructions on their web page [here](https://pytorch.org/get-started/locally/#start-locally).
+
+2. The tritonclient package wheels are not hosted on the public PyPI server. We need to add the address of NVIDA's private python package index to the environment. You can complete these steps and install the tritonclient package by running the following.
+
+    ```sh
+    # If you cloned this repo, you can just uncomment and run the one line below
+    #sh ./scripts/install_triton_client.
+    pip install nvidia-pyindex
+    pip install tritonclient[all]
+    ```
 
 ### **Install via. pip**
 
-Requirements: Python 3.7+
-Optional: CUDA Compatible GPU, NVIDIA Drivers, cudnn (PyTorch pre-built wheels)
+Once the above requirements are set, you can install fastnn with the command below:
 
-Run the below in your command line.
 ```sh
-# Uncomment if you want to add NVIDIA's python package index and install FastNN/Triton Inference Server client
-
-#sh ./scripts/install_triton_client.py
-
 pip install fastnn
+```
+
+If you are comfortable with the latest default stable releases of PyTorch you can skip step 1 in the pre-requisites and run `pip install fastnn[torch]` instead.
+
+
+### **Install from source with Poetry for development**
+
+You will need to install poetry by referring to the installation instructions on their web page [here](https://python-poetry.org/docs/#installation).
+
+After cloning the repository, just run `poetry install` to install with the .lock file.
+
+Activate the virtual environment with the command below:
+
+```sh
+poetry shell
 ```
 
 
 ### **Docker**
 
-Images hosted on Docker Hub [here](https://hub.docker.com/r/aychang/fastnn).
+Official FastNN images are hosted on [Docker Hub](https://hub.docker.com/r/aychang/fastnn).
 
-Access notebooks and terminal on `localhost:8888`
+Select FastNN package and image versions by referencing the [documentation](https://andrewchang.dev/fastnn/index.html#fastnn-docker-release-selector-ubuntu-1804). Development and runtime environments are available.
+
+Jupyter lab and notebook servers are accessible with notebook examples and terminal access `localhost:8888` with every image.
+
+
+Run the latest FastNN image by running below:
 
 ```sh
+docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest
+```
 
-docker run --gpus all --rm -it -p 8888:8888 aychang95/fastnn:0.0.1-cuda11.0-runtime-ubuntu18.04-py3.7
+Run images with specific configurations as can see in the example command below:
+
+```sh
+docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.1.0-cuda11.0-runtime-ubuntu18.04-py3.7
 
 ```
 
@@ -214,4 +250,6 @@ export MODEL_REPOSITORY=$(pwd)/model_repository
 Note: The current local helm chart installation deploys Triton using the NONE model control mode. All models available in the S3 Model Zoo will be deployed...good luck. 
 Deployed models and model control mode can be edited in the helm chart deployment configuration file.
 
+# License
 
+This project is licensed under the terms of the MIT license.
