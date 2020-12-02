@@ -22,7 +22,7 @@ jobs:
         run: poetry env use python3.8
       - name: Set up FastNN dependencies
         run: |
-          poetry install -E docs
+          poetry install --extras ["torch docs"]
           poetry run pip install nvidia-pyindex
           poetry run pip install tritonclient[all]
       - name: Deploy docs
