@@ -113,7 +113,7 @@ A framework for deploying serializable and optimizable neural net models at scal
     - Various exported models hosted in this repo via. git-lfs and AWS S3. Includes models from the HuggingFace's Transformers and 
     TorchVision
   - **Model Deployment**
-    - Deploy models with CPU/GPU-compatible servers with Triton Inference Server
+    - Deploy models using Triton Inference Server on CPU/GPU-compatible server(s) with helm or docker
   - **FastNN Client**
     - Client wrapper for Triton Inference Server's client module for programmatic requests with python
 
