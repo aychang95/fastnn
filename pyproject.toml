@@ -3,6 +3,12 @@ name = "fastnn"
 version = "0.1.0"
 description = "A python library and framework for fast neural network computations."
 authors = ["Andrew Chang <aychang995@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://andrewchang.dev/fastnn/"
+repository = "https://github.com/aychang95/fastnn"
+documentation = "https://andrewchang.dev/fastnn/"
+
 
 [tool.poetry.dependencies]
 python = "^3.7"
