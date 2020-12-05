@@ -8,7 +8,6 @@ docker run --gpus=1 --rm -p8000:8000 -p8001:8001 -p8002:8002 -v ${MODEL_REPOSITO
     --model-repository=/models \
     --log-verbose=1 \
     --model-control-mode=explicit \
-    --load-model=fasterrcnn-resnet50 \
     --load-model=bert-large-cased-whole-word-masking-finetuned-squad \
     --load-model=bert-large-cased-whole-word-masking-finetuned-squad-cpu \
     --load-model=mrm8488.bert-base-portuguese-cased-finetuned-squad-v1-pt \
