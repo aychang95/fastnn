@@ -2,6 +2,17 @@
 
 A framework for deploying serializable and optimizable neural net models at scale in production via. the NVIDIA Triton Inference Server.
 
+<p align="center">
+    <a href="https://hub.docker.com/r/aychang/fastnn">
+        <img src="https://img.shields.io/docker/cloud/build/aychang/fastnn"
+    </a>
+    <a href="https://badge.fury.io/py/fastnn">
+        <img src="https://badge.fury.io/py/fastnn.svg">
+    </a>
+    <a href="https://github.com/aychang95/fastnn/blob/master/LICENSE">
+        <img src="https://img.shields.io/github/license/aychang95/fastnn">
+    </a>
+</p>
 
 ## **FastNN Docker Release Selector (Ubuntu 18.04)**
     
