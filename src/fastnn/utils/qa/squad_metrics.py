@@ -15,7 +15,7 @@ import math
 import re
 import string
 
-from transformers.tokenization_bert import BasicTokenizer
+from transformers import BasicTokenizer
 
 
 logger = logging.getLogger(__name__)

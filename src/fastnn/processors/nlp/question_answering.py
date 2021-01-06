@@ -44,7 +44,8 @@ class TransformersQAProcessor(Processor):
         self, model_name_or_path: str = "distilbert-base-cased-distilled-squad"
     ):
         self.tokenizer = AutoTokenizer.from_pretrained(
-            model_name_or_path
+            model_name_or_path,
+            use_fast=False
         )  # Can't use fast tokenizer yet for QA `use_fast=True`
 
     def process(
