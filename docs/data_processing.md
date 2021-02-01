@@ -2,7 +2,6 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aychang95/fastnn/blob/main/notebooks/data_processing.ipynb)
 
-
 ## *Available Processors*
 
 ### Natural Language Processing:
@@ -10,6 +9,7 @@
 | Task | Class | Process Input Format | Process output Format |
 | ----------------------------- | ----------------------------- | ----- | ------ |
 | SQuAD Question Answering      | `TransformersQAProcessor`     | `**{query: List[str], context: List[str]}`| `List[torch.Tensor, torch.Tensor, torch.Tensor]` |
+| Token Classification (NER)    | `TransformersTokenTaggingProcessor` | `**(text: List[str]` | `List[List[Tuple[str,str]]]` |
 
 ### Computer Vision
 | Task | Class | Process Input Format | Process output Format |
@@ -49,6 +49,34 @@ processor = TransformersQAProcessor(model_name_or_path=model_name_or_path)
 
 examples, features, dataloader = processor.process_batch(query=query*8, context=context*8, mini_batch_size=8, use_gpu=True)
 
+
+```
+
+### Token Tagging (NER/POS) - TransformersTokenTaggingProcessor
+
+
+```python
+from fastnn.processors.nlp.token_tagging import TransformersTokenTaggingProcessor
+
+# Conll03 label names
+label_strings = [
+    "O",       # Outside of a named entity
+    "B-MISC",  # Beginning of a miscellaneous entity right after another miscellaneous entity
+    "I-MISC",  # Miscellaneous entity
+    "B-PER",   # Beginning of a person's name right after another person's name
+    "I-PER",   # Person's name
+    "B-ORG",   # Beginning of an organisation right after another organisation
+    "I-ORG",   # Organisation
+    "B-LOC",   # Beginning of a location right after another location
+    "I-LOC"    # Location
+]
+
+model_name_or_path = "dbmdz/bert-large-cased-finetuned-conll03-english"
+
+processor = TransformersTokenTaggingProcessor(model_name_or_path=model_name_or_path, label_strings=label_strings)
+
+# Use context string from above in QA example
+dataloader = processor.process_batch(text=context, mini_batch_size=4, use_gpu=True)
 
 ```
 
