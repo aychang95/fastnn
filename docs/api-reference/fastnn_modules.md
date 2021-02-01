@@ -4,6 +4,12 @@
     :docstring:
     :members: forward
 
+## Token Tagging Modules
+
+::: fastnn.nn.token_tagging.NERModule
+    :docstring:
+    :members: forward
+
 ## Object Detection Modules
 
 ::: fastnn.nn.object_detection.FasterRCNNModule
