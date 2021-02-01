@@ -1,0 +1,816 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Fast Neural Networks - A framework for deploying serializable and optimizable neural net models at scale in production via. the NVIDIA Triton Inference Server.">
+      
+      
+      
+      
+        <link rel="canonical" href="https://github.com/aychang95/fastnn/model_exporting.html">
+      
+      <link rel="shortcut icon" href=".">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.5">
+    
+    
+      
+        <title>Exporting Models - FastNN</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.15aa0b43.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.75751829.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#8bc34b">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="css/autodoc.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="light-green" data-md-color-accent="indigo">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#export-pytorch-model-to-torchscript-module" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://github.com/aychang95/fastnn" title="FastNN" class="md-header-nav__button md-logo" aria-label="FastNN">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            FastNN
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Exporting Models
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/aychang95/fastnn" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    aychang95/fastnn
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://github.com/aychang95/fastnn" title="FastNN" class="md-nav__button md-logo" aria-label="FastNN">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    FastNN
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/aychang95/fastnn" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    aychang95/fastnn
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        FastNN Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_processing.html" class="md-nav__link">
+        Data Processing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Exporting Models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="model_exporting.html" class="md-nav__link md-nav__link--active">
+        Exporting Models
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#available-modules-for-exporting" class="md-nav__link">
+    Available Modules for Exporting
+  </a>
+  
+    <nav class="md-nav" aria-label="Available Modules for Exporting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#natural-language-processing" class="md-nav__link">
+    Natural Language Processing:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#computer-vision" class="md-nav__link">
+    Computer Vision
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn-model-exporting-with-torchscriptexporter" class="md-nav__link">
+    FastNN Model Exporting with TorchScriptExporter
+  </a>
+  
+    <nav class="md-nav" aria-label="FastNN Model Exporting with TorchScriptExporter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bartqamodule" class="md-nav__link">
+    BartQAModule
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nermodule" class="md-nav__link">
+    NERModule
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fasterrcnnmodule" class="md-nav__link">
+    FasterRCNNModule
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model_zoo.html" class="md-nav__link">
+        Model Zoo
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model_deployment.html" class="md-nav__link">
+        Model Deployment
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="inference_client.html" class="md-nav__link">
+        Inference Client
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7" >
+      
+      <label class="md-nav__link" for="nav-7">
+        API Reference
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="nav-7">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/processor.html" class="md-nav__link">
+        Processor
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/fastnn_modules.html" class="md-nav__link">
+        FastNN Modules
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/exporter.html" class="md-nav__link">
+        Exporter
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/fastnn_client.html" class="md-nav__link">
+        FastNN Client
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#available-modules-for-exporting" class="md-nav__link">
+    Available Modules for Exporting
+  </a>
+  
+    <nav class="md-nav" aria-label="Available Modules for Exporting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#natural-language-processing" class="md-nav__link">
+    Natural Language Processing:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#computer-vision" class="md-nav__link">
+    Computer Vision
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn-model-exporting-with-torchscriptexporter" class="md-nav__link">
+    FastNN Model Exporting with TorchScriptExporter
+  </a>
+  
+    <nav class="md-nav" aria-label="FastNN Model Exporting with TorchScriptExporter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bartqamodule" class="md-nav__link">
+    BartQAModule
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nermodule" class="md-nav__link">
+    NERModule
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fasterrcnnmodule" class="md-nav__link">
+    FasterRCNNModule
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="export-pytorch-model-to-torchscript-module">Export Pytorch Model to TorchScript Module<a class="headerlink" href="#export-pytorch-model-to-torchscript-module" title="Permanent link">&para;</a></h1>
+<p><a href="https://colab.research.google.com/github/aychang95/fastnn/blob/main/notebooks/model_exporting.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<h2 id="available-modules-for-exporting"><em>Available Modules for Exporting</em><a class="headerlink" href="#available-modules-for-exporting" title="Permanent link">&para;</a></h2>
+<h3 id="natural-language-processing">Natural Language Processing:<a class="headerlink" href="#natural-language-processing" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Model Architecture</th>
+<th>Class</th>
+<th>Model Input</th>
+<th>Model Output</th>
+<th>Compatible Processors</th>
+<th>GPU Support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bert with Question Answering Head</td>
+<td><code>BertQAModule</code></td>
+<td><code>*(torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor)</code></td>
+<td><code>List[torch.Tensor, torch.Tensor, torch.Tensor]</code></td>
+<td><code>TransformersQAProcessor</code></td>
+<td><img alt="✔" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/2714.svg" title=":heavy_check_mark:" /></td>
+</tr>
+<tr>
+<td>Transformers model with Token Classification Head</td>
+<td><code>NERModule</code></td>
+<td><code>*(torch.Tensor, torch.Tensor)</code></td>
+<td><code>List[torch.Tensor, torch.Tensor]</code></td>
+<td><code>TransformersTokenTaggingProcessor</code></td>
+<td><img alt="✔" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/2714.svg" title=":heavy_check_mark:" /></td>
+</tr>
+</tbody>
+</table>
+<h3 id="computer-vision">Computer Vision<a class="headerlink" href="#computer-vision" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Model Architecture</th>
+<th>Class</th>
+<th>Model Input</th>
+<th>Model Output</th>
+<th>Compatible Processors</th>
+<th>GPU Support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Faster R-CNN with Resnet-50 Backbone</td>
+<td><code>FasterRCNNModule</code></td>
+<td><code>Union[torch.Tensor, List[torch.Tensor]</code></td>
+<td><code>Union[Tuple[torch.Tensor, torch.Tensor, torch.Tensor], List[torch.Tensor]]</code></td>
+<td><code>ObjectDetectionProcessor</code></td>
+<td><img alt="✔" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/2714.svg" title=":heavy_check_mark:" /></td>
+</tr>
+</tbody>
+</table>
+<h2 id="fastnn-model-exporting-with-torchscriptexporter">FastNN Model Exporting with <code>TorchScriptExporter</code><a class="headerlink" href="#fastnn-model-exporting-with-torchscriptexporter" title="Permanent link">&para;</a></h2>
+<h3 id="bartqamodule"><strong><code>BartQAModule</code></strong><a class="headerlink" href="#bartqamodule" title="Permanent link">&para;</a></h3>
+<p>Run pre-requisite data processing steps. This will create compatible input data required for tracing our models in the next step.</p>
+<p>See <code>TransformersQAProcessor</code> section in Data Processing documentation page for more information.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">fastnn.processors.nlp.question_answering</span> <span class="kn">import</span> <span class="n">TransformersQAProcessor</span>
+
+<span class="n">context</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;&quot;Albert Einstein was born at Ulm, in Württemberg, Germany, on March 14, 1879. Six weeks later the family moved to Munich, where he later on began his schooling at the Luitpold Gymnasium. </span>
+<span class="s2">Later, they moved to Italy and Albert continued his education at Aarau, Switzerland and in 1896 he entered the Swiss Federal Polytechnic School in Zurich to be trained as a teacher in physics and mathematics. </span>
+<span class="s2">In 1901, the year he gained his diploma, he acquired Swiss citizenship and, as he was unable to find a teaching post, he accepted a position as technical assistant in the Swiss Patent Office. In 1905 he obtained his doctor’s degree.</span>
+<span class="s2">During his stay at the Patent Office, and in his spare time, he produced much of his remarkable work and in 1908 he was appointed Privatdozent in Berne. In 1909 he became Professor Extraordinary at Zurich, in 1911 Professor of </span>
+<span class="s2">Theoretical Physics at Prague, returning to Zurich in the following year to fill a similar post. In 1914 he was appointed Director of the Kaiser Wilhelm Physical Institute and Professor in the University of Berlin. He became a </span>
+<span class="s2">German citizen in 1914 and remained in Berlin until 1933 when he renounced his citizenship for political reasons and emigrated to America to take the position of Professor of Theoretical Physics at Princeton*. He became a United </span>
+<span class="s2">States citizen in 1940 and retired from his post in 1945. After World War II, Einstein was a leading figure in the World Government Movement, he was offered the Presidency of the State of Israel, which he declined, and he </span>
+<span class="s2">collaborated with Dr. Chaim Weizmann in establishing the Hebrew University of Jerusalem. Einstein always appeared to have a clear view of the problems of physics and the determination to solve them. He had a strategy of </span>
+<span class="s2">his own and was able to visualize the main stages on the way to his goal. He regarded his major achievements as mere stepping-stones for the next advance. At the start of his scientific work, Einstein realized the </span>
+<span class="s2">inadequacies of Newtonian mechanics and his special theory of relativity stemmed from an attempt to reconcile the laws of mechanics with the laws of the electromagnetic field. He dealt with classical problems of </span>
+<span class="s2">statistical mechanics and problems in which they were merged with quantum theory: this led to an explanation of the Brownian movement of molecules. He investigated the thermal properties of light with a low radiation</span>
+<span class="s2">density and his observations laid the foundation of the photon theory of light. In his early days in Berlin, Einstein postulated that the correct interpretation of the special theory of relativity must also furnish a</span>
+<span class="s2">theory of gravitation and in 1916 he published his paper on the general theory of relativity. During this time he also contributed to the problems of the theory of radiation and statistical mechanics.&quot;&quot;&quot;</span><span class="p">]</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;When was Einstein born?&quot;</span><span class="p">]</span>
+
+<span class="n">model_name_or_path</span> <span class="o">=</span> <span class="s2">&quot;distilbert-base-cased-distilled-squad&quot;</span>
+
+<span class="n">processor</span> <span class="o">=</span> <span class="n">TransformersQAProcessor</span><span class="p">(</span><span class="n">model_name_or_path</span><span class="o">=</span><span class="n">model_name_or_path</span><span class="p">)</span>
+
+<span class="n">examples</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">dataloader</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">process_batch</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="o">*</span><span class="mi">8</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="o">*</span><span class="mi">8</span><span class="p">,</span> <span class="n">mini_batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Using processed input data, export your torch model to a model compatible with C++ programs.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">fastnn.nn.question_answering</span> <span class="kn">import</span> <span class="n">BertQAModule</span>
+<span class="kn">from</span> <span class="nn">fastnn.exporting</span> <span class="kn">import</span> <span class="n">TorchScriptExporter</span>
+
+<span class="n">pytorch_model</span> <span class="o">=</span> <span class="n">BertQAModule</span><span class="p">(</span><span class="n">model_name_or_path</span><span class="o">=</span><span class="n">model_name_or_path</span><span class="p">)</span>
+<span class="n">exporter</span> <span class="o">=</span> <span class="n">TorchScriptExporter</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">pytorch_model</span><span class="p">,</span> <span class="n">dataloader</span><span class="o">=</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">torchscript_model</span> <span class="o">=</span> <span class="n">exporter</span><span class="o">.</span><span class="n">export</span><span class="p">()</span>
+<span class="n">exporter</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="s2">&quot;model.pt&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="nermodule">NERModule<a class="headerlink" href="#nermodule" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">fastnn.processors.nlp.token_tagging</span> <span class="kn">import</span> <span class="n">TransformersTokenTaggingProcessor</span>
+
+<span class="c1"># Conll03 label names</span>
+<span class="n">label_strings</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;O&quot;</span><span class="p">,</span>       <span class="c1"># Outside of a named entity</span>
+    <span class="s2">&quot;B-MISC&quot;</span><span class="p">,</span>  <span class="c1"># Beginning of a miscellaneous entity right after another miscellaneous entity</span>
+    <span class="s2">&quot;I-MISC&quot;</span><span class="p">,</span>  <span class="c1"># Miscellaneous entity</span>
+    <span class="s2">&quot;B-PER&quot;</span><span class="p">,</span>   <span class="c1"># Beginning of a person&#39;s name right after another person&#39;s name</span>
+    <span class="s2">&quot;I-PER&quot;</span><span class="p">,</span>   <span class="c1"># Person&#39;s name</span>
+    <span class="s2">&quot;B-ORG&quot;</span><span class="p">,</span>   <span class="c1"># Beginning of an organisation right after another organisation</span>
+    <span class="s2">&quot;I-ORG&quot;</span><span class="p">,</span>   <span class="c1"># Organisation</span>
+    <span class="s2">&quot;B-LOC&quot;</span><span class="p">,</span>   <span class="c1"># Beginning of a location right after another location</span>
+    <span class="s2">&quot;I-LOC&quot;</span>    <span class="c1"># Location</span>
+<span class="p">]</span>
+
+<span class="n">model_name_or_path</span> <span class="o">=</span> <span class="s2">&quot;dbmdz/bert-large-cased-finetuned-conll03-english&quot;</span>
+
+<span class="n">processor</span> <span class="o">=</span> <span class="n">TransformersTokenTaggingProcessor</span><span class="p">(</span><span class="n">model_name_or_path</span><span class="o">=</span><span class="n">model_name_or_path</span><span class="p">,</span> <span class="n">label_strings</span><span class="o">=</span><span class="n">label_strings</span><span class="p">)</span>
+
+<span class="c1"># Use context string from above in QA example</span>
+<span class="n">dataloader</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">process_batch</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> <span class="n">mini_batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">fastnn.nn.token_tagging</span> <span class="kn">import</span> <span class="n">NERModule</span>
+<span class="kn">from</span> <span class="nn">fastnn.exporting</span> <span class="kn">import</span> <span class="n">TorchScriptExporter</span>
+
+<span class="n">pytorch_model</span> <span class="o">=</span> <span class="n">NERModule</span><span class="p">(</span><span class="n">model_name_or_path</span><span class="o">=</span><span class="n">model_name_or_path</span><span class="p">)</span>
+<span class="n">exporter</span> <span class="o">=</span> <span class="n">TorchScriptExporter</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">pytorch_model</span><span class="p">,</span> <span class="n">dataloader</span><span class="o">=</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">torchscript_model</span> <span class="o">=</span> <span class="n">exporter</span><span class="o">.</span><span class="n">export</span><span class="p">()</span>
+<span class="n">exporter</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="s2">&quot;model.pt&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="fasterrcnnmodule"><strong><code>FasterRCNNModule</code></strong><a class="headerlink" href="#fasterrcnnmodule" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">fastnn.processors.cv.object_detection</span> <span class="kn">import</span> <span class="n">ObjectDetectionProcessor</span>
+
+<span class="c1"># COCO dataset category names</span>
+<span class="n">label_strings</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;__background__&#39;</span><span class="p">,</span> <span class="s1">&#39;person&#39;</span><span class="p">,</span> <span class="s1">&#39;bicycle&#39;</span><span class="p">,</span> <span class="s1">&#39;car&#39;</span><span class="p">,</span> <span class="s1">&#39;motorcycle&#39;</span><span class="p">,</span> <span class="s1">&#39;airplane&#39;</span><span class="p">,</span> <span class="s1">&#39;bus&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;truck&#39;</span><span class="p">,</span> <span class="s1">&#39;boat&#39;</span><span class="p">,</span> <span class="s1">&#39;traffic light&#39;</span><span class="p">,</span> <span class="s1">&#39;fire hydrant&#39;</span><span class="p">,</span> <span class="s1">&#39;N/A&#39;</span><span class="p">,</span> <span class="s1">&#39;stop sign&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;parking meter&#39;</span><span class="p">,</span> <span class="s1">&#39;bench&#39;</span><span class="p">,</span> <span class="s1">&#39;bird&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;dog&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">,</span> <span class="s1">&#39;sheep&#39;</span><span class="p">,</span> <span class="s1">&#39;cow&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;elephant&#39;</span><span class="p">,</span> <span class="s1">&#39;bear&#39;</span><span class="p">,</span> <span class="s1">&#39;zebra&#39;</span><span class="p">,</span> <span class="s1">&#39;giraffe&#39;</span><span class="p">,</span> <span class="s1">&#39;N/A&#39;</span><span class="p">,</span> <span class="s1">&#39;backpack&#39;</span><span class="p">,</span> <span class="s1">&#39;umbrella&#39;</span><span class="p">,</span> <span class="s1">&#39;N/A&#39;</span><span class="p">,</span> <span class="s1">&#39;N/A&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;handbag&#39;</span><span class="p">,</span> <span class="s1">&#39;tie&#39;</span><span class="p">,</span> <span class="s1">&#39;suitcase&#39;</span><span class="p">,</span> <span class="s1">&#39;frisbee&#39;</span><span class="p">,</span> <span class="s1">&#39;skis&#39;</span><span class="p">,</span> <span class="s1">&#39;snowboard&#39;</span><span class="p">,</span> <span class="s1">&#39;sports ball&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;kite&#39;</span><span class="p">,</span> <span class="s1">&#39;baseball bat&#39;</span><span class="p">,</span> <span class="s1">&#39;baseball glove&#39;</span><span class="p">,</span> <span class="s1">&#39;skateboard&#39;</span><span class="p">,</span> <span class="s1">&#39;surfboard&#39;</span><span class="p">,</span> <span class="s1">&#39;tennis racket&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;bottle&#39;</span><span class="p">,</span> <span class="s1">&#39;N/A&#39;</span><span class="p">,</span> <span class="s1">&#39;wine glass&#39;</span><span class="p">,</span> <span class="s1">&#39;cup&#39;</span><span class="p">,</span> <span class="s1">&#39;fork&#39;</span><span class="p">,</span> <span class="s1">&#39;knife&#39;</span><span class="p">,</span> <span class="s1">&#39;spoon&#39;</span><span class="p">,</span> <span class="s1">&#39;bowl&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;banana&#39;</span><span class="p">,</span> <span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;sandwich&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;broccoli&#39;</span><span class="p">,</span> <span class="s1">&#39;carrot&#39;</span><span class="p">,</span> <span class="s1">&#39;hot dog&#39;</span><span class="p">,</span> <span class="s1">&#39;pizza&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;donut&#39;</span><span class="p">,</span> <span class="s1">&#39;cake&#39;</span><span class="p">,</span> <span class="s1">&#39;chair&#39;</span><span class="p">,</span> <span class="s1">&#39;couch&#39;</span><span class="p">,</span> <span class="s1">&#39;potted plant&#39;</span><span class="p">,</span> <span class="s1">&#39;bed&#39;</span><span class="p">,</span> <span class="s1">&#39;N/A&#39;</span><span class="p">,</span> <span class="s1">&#39;dining table&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;N/A&#39;</span><span class="p">,</span> <span class="s1">&#39;N/A&#39;</span><span class="p">,</span> <span class="s1">&#39;toilet&#39;</span><span class="p">,</span> <span class="s1">&#39;N/A&#39;</span><span class="p">,</span> <span class="s1">&#39;tv&#39;</span><span class="p">,</span> <span class="s1">&#39;laptop&#39;</span><span class="p">,</span> <span class="s1">&#39;mouse&#39;</span><span class="p">,</span> <span class="s1">&#39;remote&#39;</span><span class="p">,</span> <span class="s1">&#39;keyboard&#39;</span><span class="p">,</span> <span class="s1">&#39;cell phone&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;microwave&#39;</span><span class="p">,</span> <span class="s1">&#39;oven&#39;</span><span class="p">,</span> <span class="s1">&#39;toaster&#39;</span><span class="p">,</span> <span class="s1">&#39;sink&#39;</span><span class="p">,</span> <span class="s1">&#39;refrigerator&#39;</span><span class="p">,</span> <span class="s1">&#39;N/A&#39;</span><span class="p">,</span> <span class="s1">&#39;book&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;clock&#39;</span><span class="p">,</span> <span class="s1">&#39;vase&#39;</span><span class="p">,</span> <span class="s1">&#39;scissors&#39;</span><span class="p">,</span> <span class="s1">&#39;teddy bear&#39;</span><span class="p">,</span> <span class="s1">&#39;hair drier&#39;</span><span class="p">,</span> <span class="s1">&#39;toothbrush&#39;</span>
+<span class="p">]</span>
+
+<span class="n">processor</span> <span class="o">=</span> <span class="n">ObjectDetectionProcessor</span><span class="p">(</span><span class="n">label_strings</span><span class="o">=</span><span class="n">label_strings</span><span class="p">)</span>
+
+<span class="c1"># Replace &quot;img_dir_path&quot; with root directory of .png or .jpeg images</span>
+<span class="n">dataloader</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">process_batch</span><span class="p">(</span><span class="n">dir_path</span><span class="o">=</span><span class="s2">&quot;./img_data_dir&quot;</span><span class="p">,</span> <span class="n">mini_batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">fastnn.nn.object_detection</span> <span class="kn">import</span> <span class="n">FasterRCNNModule</span>
+<span class="kn">from</span> <span class="nn">fastnn.exporting</span> <span class="kn">import</span> <span class="n">TorchScriptExporter</span>
+
+<span class="n">pytorch_model</span> <span class="o">=</span> <span class="n">FasterRCNNModule</span><span class="p">()</span> 
+<span class="n">exporter</span> <span class="o">=</span> <span class="n">TorchScriptExporter</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">pytorch_model</span><span class="p">,</span> <span class="n">dataloader</span><span class="o">=</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">exported_model</span> <span class="o">=</span> <span class="n">exporter</span><span class="o">.</span><span class="n">export</span><span class="p">()</span> <span class="c1"># May have to run this twice to force</span>
+<span class="n">exporter</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="s2">&quot;model.pt&quot;</span><span class="p">)</span>
+
+<span class="c1"># Triton Compatible Traced Model</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="n">triton_batch_tensor</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">dataloader</span><span class="p">))[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">exported_model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">exporter</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><span class="n">triton_batch_tensor</span><span class="p">))</span>
+<span class="n">exported_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;model.pt&quot;</span><span class="p">)</span>
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="data_processing.html" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Data Processing
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="model_zoo.html" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Model Zoo
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="assets/javascripts/vendor.93c04032.min.js"></script>
+      <script src="assets/javascripts/bundle.83e5331e.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: ".",
+          features: [],
+          search: Object.assign({
+            worker: "assets/javascripts/worker/search.8c7e0a7e.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
