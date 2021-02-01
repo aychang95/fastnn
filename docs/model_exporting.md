@@ -2,13 +2,13 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aychang95/fastnn/blob/main/notebooks/model_exporting.ipynb)
 
-
 ## *Available Modules for Exporting*
 
 ### Natural Language Processing:
 | Model Architecture | Class | Model Input | Model Output | Compatible Processors | GPU Support |
 | ----------------------------- | ----------------------------- | ----- | ------ | ----- | ---- |
 | Bert with Question Answering Head | `BertQAModule`     | `*(torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor)` | `List[torch.Tensor, torch.Tensor, torch.Tensor]` | `TransformersQAProcessor` | :heavy_check_mark: |
+| Transformers model with Token Classification Head | `NERModule` | `*(torch.Tensor, torch.Tensor)` | `List[torch.Tensor, torch.Tensor]` | `TransformersTokenTaggingProcessor` | :heavy_check_mark: |
 
 ### Computer Vision
 | Model Architecture | Class | Model Input | Model Output | Compatible Processors | GPU Support |
@@ -60,6 +60,44 @@ from fastnn.nn.question_answering import BertQAModule
 from fastnn.exporting import TorchScriptExporter
 
 pytorch_model = BertQAModule(model_name_or_path=model_name_or_path)
+exporter = TorchScriptExporter(model=pytorch_model, dataloader=dataloader, use_gpu=True)
+torchscript_model = exporter.export()
+exporter.serialize("model.pt")
+```
+
+### NERModule 
+
+
+```python
+from fastnn.processors.nlp.token_tagging import TransformersTokenTaggingProcessor
+
+# Conll03 label names
+label_strings = [
+    "O",       # Outside of a named entity
+    "B-MISC",  # Beginning of a miscellaneous entity right after another miscellaneous entity
+    "I-MISC",  # Miscellaneous entity
+    "B-PER",   # Beginning of a person's name right after another person's name
+    "I-PER",   # Person's name
+    "B-ORG",   # Beginning of an organisation right after another organisation
+    "I-ORG",   # Organisation
+    "B-LOC",   # Beginning of a location right after another location
+    "I-LOC"    # Location
+]
+
+model_name_or_path = "dbmdz/bert-large-cased-finetuned-conll03-english"
+
+processor = TransformersTokenTaggingProcessor(model_name_or_path=model_name_or_path, label_strings=label_strings)
+
+# Use context string from above in QA example
+dataloader = processor.process_batch(text=context, mini_batch_size=4, use_gpu=True)
+```
+
+
+```python
+from fastnn.nn.token_tagging import NERModule
+from fastnn.exporting import TorchScriptExporter
+
+pytorch_model = NERModule(model_name_or_path=model_name_or_path)
 exporter = TorchScriptExporter(model=pytorch_model, dataloader=dataloader, use_gpu=True)
 torchscript_model = exporter.export()
 exporter.serialize("model.pt")

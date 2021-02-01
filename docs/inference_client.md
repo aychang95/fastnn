@@ -2,7 +2,6 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aychang95/fastnn/blob/main/notebooks/inference_client.ipynb)
 
-
 # Examples:
 
 ### **"distilbert-squad" Model**
@@ -44,7 +43,9 @@ import numpy as np
 
 from fastnn.client import FastNNClient
 
-client = FastNNClient(url="127.0.0.1:8000", model_name="distilbert-squad", model_version="1")
+client = FastNNClient(url="127.0.0.1:8001", model_name="distilbert-squad", model_version="1", client_type="grpc")
+#client = FastNNClient(url="127.0.0.1:8000", model_name="distilbert-squad", model_version="1", client_type="http")
+
 
 #%%timeit
 all_outputs = []
@@ -92,6 +93,79 @@ dataloader = processor.process_batch(dir_path="./img_dir_path", mini_batch_size=
 
 ```
 
+### "dbmdz/bert-large-cased-finetuned-conll03-english" 
+
+
+```python
+from fastnn.nn.token_tagging import NERModule
+from fastnn.processors.nlp.token_tagging import TransformersTokenTaggingProcessor
+from fastnn.exporting import TorchScriptExporter
+from fastnn.client import FastNNClient
+```
+
+
+```python
+context = ["""Albert Einstein was born at Ulm, in Württemberg, Germany, on March 14, 1879. Six weeks later the family moved to Munich, where he later on began his schooling at the Luitpold Gymnasium. Later, they moved to Italy and Albert continued his education at Aarau, Switzerland and in 1896 he entered the Swiss Federal Polytechnic School in Zurich to be trained as a teacher in physics and mathematics. In 1901, the year he gained his diploma, he acquired Swiss citizenship and, as he was unable to find a teaching post, he accepted a position as technical assistant in the Swiss Patent Office. In 1905 he obtained his doctor’s degree.
+
+During his stay at the Patent Office, and in his spare time, he produced much of his remarkable work and in 1908 he was appointed Privatdozent in Berne. In 1909 he became Professor Extraordinary at Zurich, in 1911 Professor of Theoretical Physics at Prague, returning to Zurich in the following year to fill a similar post. In 1914 he was appointed Director of the Kaiser Wilhelm Physical Institute and Professor in the University of Berlin. He became a German citizen in 1914 and remained in Berlin until 1933 when he renounced his citizenship for political reasons and emigrated to America to take the position of Professor of Theoretical Physics at Princeton*. He became a United States citizen in 1940 and retired from his post in 1945.
+
+After World War II, Einstein was a leading figure in the World Government Movement, he was offered the Presidency of the State of Israel, which he declined, and he collaborated with Dr. Chaim Weizmann in establishing the Hebrew University of Jerusalem.
+
+Einstein always appeared to have a clear view of the problems of physics and the determination to solve them. He had a strategy of his own and was able to visualize the main stages on the way to his goal. He regarded his major achievements as mere stepping-stones for the next advance.
+
+At the start of his scientific work, Einstein realized the inadequacies of Newtonian mechanics and his special theory of relativity stemmed from an attempt to reconcile the laws of mechanics with the laws of the electromagnetic field. He dealt with classical problems of statistical mechanics and problems in which they were merged with quantum theory: this led to an explanation of the Brownian movement of molecules. He investigated the thermal properties of light with a low radiation density and his observations laid the foundation of the photon theory of light.
+In his early days in Berlin, Einstein postulated that the correct interpretation of the special theory of relativity must also furnish a theory of gravitation and in 1916 he published his paper on the general theory of relativity. During this time he also contributed to the problems of the theory of radiation and statistical mechanics.""",]
+model_name_or_path = "dbmdz/bert-large-cased-finetuned-conll03-english"
+
+
+label_strings = [
+    "O",       # Outside of a named entity
+    "B-MISC",  # Beginning of a miscellaneous entity right after another miscellaneous entity
+    "I-MISC",  # Miscellaneous entity
+    "B-PER",   # Beginning of a person's name right after another person's name
+    "I-PER",   # Person's name
+    "B-ORG",   # Beginning of an organisation right after another organisation
+    "I-ORG",   # Organisation
+    "B-LOC",   # Beginning of a location right after another location
+    "I-LOC"    # Location
+]
+
+processor = TransformersTokenTaggingProcessor(model_name_or_path, label_strings=label_strings)
+
+dataloader = processor.process_batch(context*2, mini_batch_size=2, use_gpu=False)
+```
+
+
+```python
+client = FastNNClient(url="127.0.0.1:8001", model_name="dbmdz.bert-large-cased-finetuned-conll03-english", model_version="1", client_type="grpc")
+#client = FastNNClient(url="127.0.0.1:8000", model_name="dbmdz.bert-large-cased-finetuned-conll03-english", model_version="1", client_type="http")
+
+import time
+import torch
+import numpy as np
+
+start = time.time()
+all_outputs = []
+with torch.no_grad():
+    for batch in dataloader:
+        response = client.request(batch) 
+        logits = response.as_numpy('output__0')
+        logits = np.asarray(logits, dtype=np.float32)
+        input_ids = response.as_numpy('output__1')
+        input_ids = np.asarray(input_ids, dtype=np.int64)
+        
+        output = (torch.from_numpy(logits), torch.from_numpy(input_ids))
+        all_outputs.append(output)
+end = time.time()
+print(end-start)
+```
+
+
+```python
+results = processor.process_output_batch(all_outputs)
+results
+```
+
 ### **"fasterrcnn-resnet50" Model**
 
 
@@ -101,7 +175,9 @@ import numpy as np
 
 from fastnn.client import FastNNClient
 
-client = FastNNClient(url="127.0.0.1:8000", model_name="fasterrcnn-resnet50-cpu", model_version="1")
+client = FastNNClient(url="127.0.0.1:8000", model_name="fasterrcnn-resnet50-cpu", model_version="1", client_type="grpc")
+client = FastNNClient(url="127.0.0.1:8001", model_name="fasterrcnn-resnet50-cpu", model_version="1", client_type="http")
+
 
 #%%timeit
 all_outputs = []
