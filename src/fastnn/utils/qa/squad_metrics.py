@@ -614,6 +614,14 @@ def compute_predictions_logits(
             output["end_logit"] = entry.end_logit
             output["start_index"] = entry.start_index
             output["end_index"] = entry.end_index
+            output["char_start_index"] = example.char_to_word_offset.index(
+                entry.start_index
+            )
+            output["char_end_index"] = (
+                len(example.char_to_word_offset)
+                - 1
+                - example.char_to_word_offset[::-1].index(entry.end_index)
+            )
             nbest_json.append(output)
 
         assert len(nbest_json) >= 1

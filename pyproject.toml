@@ -11,18 +11,19 @@ documentation = "https://andrewchang.dev/fastnn/"
 
 
 [tool.poetry.dependencies]
-python = "^3.7"
-transformers = "^4.0.0"
-jupyter = "^1.0.0"
-jupyterlab = "^2.2.9"
+python = "^3.8"
 wget = "^3.2"
-matplotlib = "^3.3.3"
-coremltools = "^4.0"
+transformers = "^4.0.0"
+tritonclient = {extras = ["all"], version = "^2.18.0"}
 torch = {version = "1.*", optional = true}
 torchvision = {version = "0.*", optional = true}
+jupyter = {version = "^1.0.0", optional = true}
+jupyterlab = {version = "^2.2.9", optional = true}
+matplotlib = {version="^3.3.3", optional = true}
+coremltools = {version="^4.0", optional = true}
 mkdocs = {version = "^1.1.2", optional = true}
 mkdocs-material = {version = "^6.1.5", optional = true}
-mkautodoc = {version =  "^0.1.0", optional = true}
+mkdocstrings = {version = "^0.18.0", optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
@@ -31,7 +32,9 @@ black = "^20.8b1"
 
 [tool.poetry.extras]
 torch = ["torch", "torchvision"]
-docs = ["mkdocs", "mkdocs-material", "mkautodoc"]
+jupyter = ["jupyter", "jupyterlab", "matplotlib"]
+ios = ["coremltools"]
+docs = ["mkdocs", "mkdocs-material", "mkdocstrings"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
