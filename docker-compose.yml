@@ -11,8 +11,7 @@ services:
               count: 1
               capabilities: [gpu]
     ports:
-      - "8888:8888"
-      - "8000:8000"
+      - "8890:8888"
     volumes:
       - ./src:/opt/pysetup/src
       - ./poetry.lock:/opt/pysetup/poetry.lock
