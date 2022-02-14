@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/cuda:11.0-runtime-ubuntu18.04 as base
+FROM nvcr.io/nvidia/cuda:11.6.0-runtime-ubuntu20.04 as base
 
 LABEL maintainer="Andrew Chang <aychang995@gmail.com>"
 
@@ -35,8 +35,8 @@ ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
-    python3.7 \
-    python3.7-dev \
+    python3.8 \
+    python3.8-dev \
     python3-pip \
     curl
 
@@ -49,12 +49,14 @@ RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poet
 
 # copy project requirement files here to ensure they will be cached.
 WORKDIR $PYSETUP_PATH
-COPY . ./
+COPY ./src ./src
+COPY ./poetry.lock ./poetry.lock
+COPY ./pyproject.toml ./pyproject.toml
+COPY ./scripts ./scripts
+COPY ./README.md ./README.md
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
 RUN poetry install --no-dev
-RUN ./scripts/install_triton_client.sh
-
 
 FROM base as development
 

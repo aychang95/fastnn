@@ -10,18 +10,18 @@ jobs:
   deploy-docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Run image
-        uses: abatilo/actions-poetry@v2.1.0
-        with:
-          poetry-version: 1.1.4
-      - name: Set up Poetry env
-        run: poetry env use python3.8
-      - name: Set up FastNN dependencies
-        run: |
-          poetry install --extras "torch docs"
-      - name: Deploy docs
-        run: poetry run mkdocs gh-deploy --force
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Run image
+      uses: abatilo/actions-poetry@v2.1.3
+      with:
+        poetry-version: 1.1.8
+    - name: Set up Poetry env
+      run: poetry env use python3.8
+    - name: Set up FastNN dependencies
+      run: |
+        poetry install --extras "torch docs"
+    - name: Deploy docs
+      run: poetry run mkdocs gh-deploy --force

@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/cuda:11.0-devel-ubuntu18.04 as base
+FROM nvcr.io/nvidia/cuda:11.6.0-devel-ubuntu20.04 as base
 
 LABEL maintainer="Andrew Chang <aychang995@gmail.com>"
 
@@ -53,8 +53,6 @@ COPY . ./
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
 RUN poetry install --no-dev
-RUN ./scripts/install_triton_client.sh
-
 
 FROM base as development
 
