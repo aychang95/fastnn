@@ -53,8 +53,6 @@ COPY . ./
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
 RUN poetry install --no-dev
-RUN ./scripts/install_triton_client.sh
-
 
 FROM base as development
 
