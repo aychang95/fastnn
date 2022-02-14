@@ -17,8 +17,7 @@ A framework for deploying serializable and optimizable neural net models at scal
 ## **FastNN Docker Release Selector (Ubuntu 18.04)**
     
 !!! info
-
-    === "Stable (0.1.0)"
+    === "Stable (0.2.0)"
     
         === "Runtime"
     
@@ -26,21 +25,21 @@ A framework for deploying serializable and optimizable neural net models at scal
             
                 === "CUDA 10.2"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.1.0-cuda10.2-runtime-ubuntu18.04-py3.7`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda10.2-runtime-ubuntu18.04-py3.7`
     
-                === "CUDA 11.0"
+                === "CUDA 11.6.0"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.1.0-cuda11.0-runtime-ubuntu18.04-py3.7`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda11.6.0-runtime-ubuntu20.04-py3.7`
     
             === "Python 3.8"
     
                 === "CUDA 10.2"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.1.0-cuda10.2-runtime-ubuntu18.04-py3.8`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda10.2-runtime-ubuntu18.04-py3.8`
     
-                === "CUDA 11.0"
+                === "CUDA 11.6.0"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.1.0-cuda11.0-runtime-ubuntu18.04-py3.8`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda11.6.0-runtime-ubuntu20.04-py3.8`
     
         === "Development"
     
@@ -48,21 +47,21 @@ A framework for deploying serializable and optimizable neural net models at scal
             
                 === "CUDA 10.2"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.1.0-cuda10.2-devel-ubuntu18.04-py3.7`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda10.2-devel-ubuntu18.04-py3.7`
     
-                === "CUDA 11.0"
+                === "CUDA 11.6.0"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.1.0-cuda11.0-devel-ubuntu18.04-py3.7`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda11.6.0-devel-ubuntu20.04-py3.7`
     
             === "Python 3.8"
     
                 === "CUDA 10.2"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.1.0-cuda10.2-devel-ubuntu18.04-py3.8`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda10.2-devel-ubuntu18.04-py3.8`
     
-                === "CUDA 11.0"
+                === "CUDA 11.6.0"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.1.0-cuda11.0-devel-ubuntu18.04-py3.8`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda11.6.0-devel-ubuntu20.04-py3.8`
     
     === "Nightly"
     
@@ -74,9 +73,9 @@ A framework for deploying serializable and optimizable neural net models at scal
     
                     `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda10.2-runtime-ubuntu18.04-py3.7`
     
-                === "CUDA 11.0"
+                === "CUDA 11.6.0"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.0-runtime-ubuntu18.04-py3.7`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.6.0-runtime-ubuntu20.04-py3.7`
     
             === "Python 3.8"
     
@@ -84,9 +83,9 @@ A framework for deploying serializable and optimizable neural net models at scal
     
                     `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda10.2-runtime-ubuntu18.04-py3.8`
     
-                === "CUDA 11.0"
+                === "CUDA 11.6.0"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.0-runtime-ubuntu18.04-py3.8`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.6.0-runtime-ubuntu20.04-py3.8`
     
         === "Development"
     
@@ -96,9 +95,9 @@ A framework for deploying serializable and optimizable neural net models at scal
     
                     `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda10.2-devel-ubuntu18.04-py3.7`
     
-                === "CUDA 11.0"
+                === "CUDA 11.6.0"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.0-devel-ubuntu18.04-py3.7`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.6.0-devel-ubuntu20.04-py3.7`
     
             === "Python 3.8"
     
@@ -106,9 +105,9 @@ A framework for deploying serializable and optimizable neural net models at scal
     
                     `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda10.2-devel-ubuntu18.04-py3.8`
     
-                === "CUDA 11.0"
+                === "CUDA 11.6.0"
     
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.0-devel-ubuntu18.04-py3.8`
+                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.6.0-devel-ubuntu20.04-py3.8`
 
 
 
@@ -214,7 +213,7 @@ docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest
 Run images with specific configurations as can see in the example command below:
 
 ```sh
-docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.1.0-cuda11.0-runtime-ubuntu18.04-py3.7
+docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda11.6.0-runtime-ubuntu20.04-py3.7
 
 ```
 
