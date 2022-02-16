@@ -21,16 +21,6 @@ A framework for deploying serializable and optimizable neural net models at scal
     
         === "Runtime"
     
-            === "Python 3.7"
-            
-                === "CUDA 10.2"
-    
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda10.2-runtime-ubuntu18.04-py3.7`
-    
-                === "CUDA 11.6.0"
-    
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda11.6.0-runtime-ubuntu20.04-py3.7`
-    
             === "Python 3.8"
     
                 === "CUDA 10.2"
@@ -42,16 +32,6 @@ A framework for deploying serializable and optimizable neural net models at scal
                     `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda11.6.0-runtime-ubuntu20.04-py3.8`
     
         === "Development"
-    
-            === "Python 3.7"
-            
-                === "CUDA 10.2"
-    
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda10.2-devel-ubuntu18.04-py3.7`
-    
-                === "CUDA 11.6.0"
-    
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda11.6.0-devel-ubuntu20.04-py3.7`
     
             === "Python 3.8"
     
@@ -67,16 +47,6 @@ A framework for deploying serializable and optimizable neural net models at scal
     
         === "Runtime"
     
-            === "Python 3.7"
-            
-                === "CUDA 10.2"
-    
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda10.2-runtime-ubuntu18.04-py3.7`
-    
-                === "CUDA 11.6.0"
-    
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.6.0-runtime-ubuntu20.04-py3.7`
-    
             === "Python 3.8"
     
                 === "CUDA 10.2"
@@ -88,16 +58,6 @@ A framework for deploying serializable and optimizable neural net models at scal
                     `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.6.0-runtime-ubuntu20.04-py3.8`
     
         === "Development"
-    
-            === "Python 3.7"
-            
-                === "CUDA 10.2"
-    
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda10.2-devel-ubuntu18.04-py3.7`
-    
-                === "CUDA 11.6.0"
-    
-                    `docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.6.0-devel-ubuntu20.04-py3.7`
     
             === "Python 3.8"
     
