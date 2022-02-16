@@ -1,7 +1,7 @@
 from typing import Tuple
 import logging
 
-from tritonclient.grpc import InferResult # Purely for typing
+from tritonclient.grpc import InferResult  # Purely for typing
 from tritonclient import grpc
 from tritonclient import http
 
@@ -38,9 +38,9 @@ class FastNNClient:
         verbose: bool = False,
     ):
 
-        if client_type=="grpc":
+        if client_type == "grpc":
             self.client_pkg = grpc
-        elif client_type=="http":
+        elif client_type == "http":
             self.client_pkg = http
         else:
             ValueError("Paramater 'client_type' must be either grpc or http")
@@ -50,7 +50,9 @@ class FastNNClient:
         self.model_version = model_version
         self.client_type = client_type
 
-        self.triton_client = self.client_pkg.InferenceServerClient(url=url, verbose=verbose)
+        self.triton_client = self.client_pkg.InferenceServerClient(
+            url=url, verbose=verbose
+        )
         self.model_metadata = self.triton_client.get_model_metadata(
             model_name=model_name, model_version=model_version
         )
@@ -65,9 +67,9 @@ class FastNNClient:
 
         * **batch** - Tuple of torch tensors, typically batch inputs from a dataloader
         """
-        if self.client_type=="grpc":
+        if self.client_type == "grpc":
             return self.request_grpc(batch=batch)
-        elif self.client_type=="http":
+        elif self.client_type == "http":
             return self.request_http(batch=batch)
         else:
             ValueError("Paramater 'client_type' must be either grpc or http")
@@ -95,7 +97,9 @@ class FastNNClient:
 
         outputs = []
         for i, metadata in enumerate(outputs_metadata):
-            out = self.client_pkg.InferRequestedOutput(metadata["name"], binary_data=binary_data)
+            out = self.client_pkg.InferRequestedOutput(
+                metadata["name"], binary_data=binary_data
+            )
             outputs.append(out)
 
         response = self.triton_client.infer(
