@@ -19,7 +19,8 @@ class NERModule(torch.nn.Module):
     """
 
     def __init__(
-        self, model_name_or_path: str = "dbmdz/bert-large-cased-finetuned-conll03-english"
+        self,
+        model_name_or_path: str = "dbmdz/bert-large-cased-finetuned-conll03-english",
     ):
         super(NERModule, self).__init__()
         self.model = AutoModelForTokenClassification.from_pretrained(
@@ -35,7 +36,5 @@ class NERModule(torch.nn.Module):
         * **attention_mask** - Tensor generated from FastNN `Processor` class
         * ** &ast;args ** - args available to make abstraction easier for variant `Processor` classes
         """
-        logits = self.model(
-            input_ids=input_ids, attention_mask=attention_mask
-        )
+        logits = self.model(input_ids=input_ids, attention_mask=attention_mask)
         return logits[0], input_ids

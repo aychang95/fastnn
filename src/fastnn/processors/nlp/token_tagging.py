@@ -40,21 +40,22 @@ class TransformersTokenTaggingProcessor(Processor):
     """
 
     def __init__(
-        self, model_name_or_path: str = "dbmdz/bert-large-cased-finetuned-conll03-english", label_strings: List[str]=[
-                "O",       # Outside of a named entity
-                "B-MISC",  # Beginning of a miscellaneous entity right after another miscellaneous entity
-                "I-MISC",  # Miscellaneous entity
-                "B-PER",   # Beginning of a person's name right after another person's name
-                "I-PER",   # Person's name
-                "B-ORG",   # Beginning of an organisation right after another organisation
-                "I-ORG",   # Organisation
-                "B-LOC",   # Beginning of a location right after another location
-                "I-LOC"    # Location
-            ]
+        self,
+        model_name_or_path: str = "dbmdz/bert-large-cased-finetuned-conll03-english",
+        label_strings: List[str] = [
+            "O",  # Outside of a named entity
+            "B-MISC",  # Beginning of a miscellaneous entity right after another miscellaneous entity
+            "I-MISC",  # Miscellaneous entity
+            "B-PER",  # Beginning of a person's name right after another person's name
+            "I-PER",  # Person's name
+            "B-ORG",  # Beginning of an organisation right after another organisation
+            "I-ORG",  # Organisation
+            "B-LOC",  # Beginning of a location right after another location
+            "I-LOC",  # Location
+        ],
     ):
         self.tokenizer = AutoTokenizer.from_pretrained(
-            model_name_or_path,
-            use_fast=True
+            model_name_or_path, use_fast=True
         )
         self.label_strings = label_strings
 
@@ -72,9 +73,13 @@ class TransformersTokenTaggingProcessor(Processor):
         * **max_seq_length** - Maximum context token length. Check model configs to see max sequence length the model was trained with
         """
 
-        tokens = self.tokenizer(text=text, return_tensors="pt", padding="max_length", truncation=True)
-        dataset = TensorDataset(tokens["input_ids"], tokens["attention_mask"], )
-
+        tokens = self.tokenizer(
+            text=text, return_tensors="pt", padding="max_length", truncation=True
+        )
+        dataset = TensorDataset(
+            tokens["input_ids"],
+            tokens["attention_mask"],
+        )
 
         return dataset
 
@@ -105,16 +110,13 @@ class TransformersTokenTaggingProcessor(Processor):
         else:
             device = torch.device("cpu")
 
-        dataset = self.process(
-            text=text
-        )
+        dataset = self.process(text=text)
 
         dataloader = DataLoader(
             dataset,
             batch_size=mini_batch_size,
             collate_fn=lambda x: [t.to(device) for t in self._collate_fn(x)],
         )
-
 
         return dataloader
 
@@ -124,11 +126,8 @@ class TransformersTokenTaggingProcessor(Processor):
     ):
         pass
 
-    def process_output_batch(
-        self,
-        outputs: List
-    ) -> List[List[Tuple[str, str]]]:
-        """ Process output of Transformers NER model
+    def process_output_batch(self, outputs: List) -> List[List[Tuple[str, str]]]:
+        """Process output of Transformers NER model
 
         * **outputs** - List of batch output tensors from a model's forward pass
         """
@@ -138,7 +137,15 @@ class TransformersTokenTaggingProcessor(Processor):
             argmax_batch = [torch.argmax(o, dim=1) for o in logits]
             for i in range(len(tokens_batch)):
                 # Filter out padding
-                results.append([(token, self.label_strings[prediction]) for token, prediction in zip(tokens_batch[i], argmax_batch[i].cpu().numpy()) if token!='[PAD]'])
+                results.append(
+                    [
+                        (token, self.label_strings[prediction])
+                        for token, prediction in zip(
+                            tokens_batch[i], argmax_batch[i].cpu().numpy()
+                        )
+                        if token != "[PAD]"
+                    ]
+                )
         return results
 
     def _collate_fn(self, data):

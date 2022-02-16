@@ -8,14 +8,16 @@ from torch.utils.data.dataloader import default_collate
 
 from transformers import (
     SquadExample,
-    squad_convert_examples_to_features,
     AutoTokenizer,
 )
 
-from transformers.data.processors.squad import SquadFeatures, SquadResult
-
 from fastnn.utils.qa.squad_metrics import (
     compute_predictions_logits,
+)
+from fastnn.utils.qa.squad import (
+    squad_convert_examples_to_features,
+    SquadFeatures,
+    SquadResult,
 )
 
 from fastnn.processors.base_processing import Processor
@@ -44,8 +46,7 @@ class TransformersQAProcessor(Processor):
         self, model_name_or_path: str = "distilbert-base-cased-distilled-squad"
     ):
         self.tokenizer = AutoTokenizer.from_pretrained(
-            model_name_or_path,
-            use_fast=False
+            model_name_or_path, use_fast=False
         )  # Can't use fast tokenizer yet for QA `use_fast=True`
 
     def process(
