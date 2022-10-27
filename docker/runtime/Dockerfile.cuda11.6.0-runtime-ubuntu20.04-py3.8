@@ -71,4 +71,4 @@ COPY --from=base $PYSETUP_PATH $PYSETUP_PATH
 RUN poetry install --no-dev --extras "jupyter torch docs"
 
 
-CMD ["sh","-c", "jupyter notebook --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.token='' --NotebookApp.password='' --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}"]
+CMD ["sh","-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.token='' --NotebookApp.password='' --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}"]
