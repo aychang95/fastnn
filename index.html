@@ -1,0 +1,963 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Fast Neural Networks - A framework for deploying serializable and optimizable neural net models at scale in production via. the NVIDIA Triton Inference Server.">
+      
+      
+      
+        <link rel="canonical" href="https://github.com/aychang95/fastnn/index.html">
+      
+      
+      
+        <link rel="next" href="data_processing.html">
+      
+      
+      <link rel="icon" href="images/logo.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.7">
+    
+    
+      
+        <title>FastNN</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.4b4a2bd9.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.356b1318.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="light-green" data-md-color-accent="indigo">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fast-neural-networks-fastnn" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="FastNN" class="md-header__button md-logo" aria-label="FastNN" data-md-component="logo">
+      
+  <img src="images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FastNN
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              FastNN Overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aychang95/fastnn" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    aychang95/fastnn
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="FastNN" class="md-nav__button md-logo" aria-label="FastNN" data-md-component="logo">
+      
+  <img src="images/logo.png" alt="logo">
+
+    </a>
+    FastNN
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aychang95/fastnn" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    aychang95/fastnn
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    FastNN Overview
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="index.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    FastNN Overview
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn-docker-release-selector-ubuntu-1804" class="md-nav__link">
+    FastNN Docker Release Selector (Ubuntu 18.04)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-guides-models-api-references" class="md-nav__link">
+    Documentation - Guides, Models, API References
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    Features:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-requisites" class="md-nav__link">
+    Pre-Requisites:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart-and-installation" class="md-nav__link">
+    Quickstart and Installation:
+  </a>
+  
+    <nav class="md-nav" aria-label="Quickstart and Installation:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-requisites_1" class="md-nav__link">
+    Pre-requisites:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-via-pip" class="md-nav__link">
+    Install via. pip
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-from-source-with-poetry-for-development" class="md-nav__link">
+    Install from source with Poetry for development
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    Docker
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#triton-inference-server-local-or-kubernetes-cluster" class="md-nav__link">
+    Triton Inference Server: Local or Kubernetes Cluster
+  </a>
+  
+    <nav class="md-nav" aria-label="Triton Inference Server: Local or Kubernetes Cluster">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local-deployment" class="md-nav__link">
+    Local Deployment
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#helm-chart-install-in-kubernetes-cluster" class="md-nav__link">
+    Helm Chart install in Kubernetes Cluster
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_processing.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model_exporting.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exporting Models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model_zoo.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Model Zoo
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model_deployment.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Model Deployment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="inference_client.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Inference Client
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/processor.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Processor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/fastnn_modules.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FastNN Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/exporter.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exporter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/fastnn_client.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FastNN Client
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn-docker-release-selector-ubuntu-1804" class="md-nav__link">
+    FastNN Docker Release Selector (Ubuntu 18.04)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-guides-models-api-references" class="md-nav__link">
+    Documentation - Guides, Models, API References
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    Features:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-requisites" class="md-nav__link">
+    Pre-Requisites:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart-and-installation" class="md-nav__link">
+    Quickstart and Installation:
+  </a>
+  
+    <nav class="md-nav" aria-label="Quickstart and Installation:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-requisites_1" class="md-nav__link">
+    Pre-requisites:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-via-pip" class="md-nav__link">
+    Install via. pip
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-from-source-with-poetry-for-development" class="md-nav__link">
+    Install from source with Poetry for development
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    Docker
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#triton-inference-server-local-or-kubernetes-cluster" class="md-nav__link">
+    Triton Inference Server: Local or Kubernetes Cluster
+  </a>
+  
+    <nav class="md-nav" aria-label="Triton Inference Server: Local or Kubernetes Cluster">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local-deployment" class="md-nav__link">
+    Local Deployment
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#helm-chart-install-in-kubernetes-cluster" class="md-nav__link">
+    Helm Chart install in Kubernetes Cluster
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="fast-neural-networks-fastnn">Fast Neural Networks (FastNN)<a class="headerlink" href="#fast-neural-networks-fastnn" title="Permanent link">&para;</a></h1>
+<p>A framework for deploying serializable and optimizable neural net models at scale in production via. the NVIDIA Triton Inference Server.</p>
+<p align="center">
+    <a href="https://hub.docker.com/r/aychang/fastnn">
+        <img src="https://img.shields.io/docker/cloud/build/aychang/fastnn"
+    </a>
+    <a href="https://badge.fury.io/py/fastnn">
+        <img src="https://badge.fury.io/py/fastnn.svg">
+    </a>
+    <a href="https://github.com/aychang95/fastnn/blob/master/LICENSE">
+        <img src="https://img.shields.io/github/license/aychang95/fastnn">
+    </a>
+</p>
+
+<h2 id="fastnn-docker-release-selector-ubuntu-1804"><strong>FastNN Docker Release Selector (Ubuntu 18.04)</strong><a class="headerlink" href="#fastnn-docker-release-selector-ubuntu-1804" title="Permanent link">&para;</a></h2>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Stable (0.2.0)</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Runtime</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="3:1"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">Python 3.8</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">CUDA 10.2</label><div class="tabbed-content">
+<p><code>docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda10.2-runtime-ubuntu18.04-py3.8</code></p>
+</div>
+<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">CUDA 11.6.0</label><div class="tabbed-content">
+<p><code>docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda11.6.0-runtime-ubuntu20.04-py3.8</code></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Development</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="5:1"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Python 3.8</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">CUDA 10.2</label><div class="tabbed-content">
+<p><code>docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda10.2-devel-ubuntu18.04-py3.8</code></p>
+</div>
+<input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">CUDA 11.6.0</label><div class="tabbed-content">
+<p><code>docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:0.2.0-cuda11.6.0-devel-ubuntu20.04-py3.8</code></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Nightly</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><label for="__tabbed_7_1">Runtime</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="8:1"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><label for="__tabbed_8_1">Python 3.8</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><label for="__tabbed_9_1">CUDA 10.2</label><div class="tabbed-content">
+<p><code>docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda10.2-runtime-ubuntu18.04-py3.8</code></p>
+</div>
+<input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><label for="__tabbed_9_2">CUDA 11.6.0</label><div class="tabbed-content">
+<p><code>docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.6.0-runtime-ubuntu20.04-py3.8</code></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><label for="__tabbed_7_2">Development</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="10:1"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio" /><label for="__tabbed_10_1">Python 3.8</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="11:2"><input checked="checked" id="__tabbed_11_1" name="__tabbed_11" type="radio" /><label for="__tabbed_11_1">CUDA 10.2</label><div class="tabbed-content">
+<p><code>docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda10.2-devel-ubuntu18.04-py3.8</code></p>
+</div>
+<input id="__tabbed_11_2" name="__tabbed_11" type="radio" /><label for="__tabbed_11_2">CUDA 11.6.0</label><div class="tabbed-content">
+<p><code>docker run --gpus all --rm -it -p 8888:8888 aychang/fastnn:latest-cuda11.6.0-devel-ubuntu20.04-py3.8</code></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2 id="documentation-guides-models-api-references"><a href="https://andrewchang.dev/fastnn">Documentation</a> - Guides, Models, API References<a class="headerlink" href="#documentation-guides-models-api-references" title="Permanent link">&para;</a></h2>
+<h2 id="features">Features:<a class="headerlink" href="#features" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Data Processing</strong><ul>
+<li>Intuitive data processing modules for encoding human-readible data into tensors compatible with deep learning libraries</li>
+</ul>
+</li>
+<li><strong>Model Exporting</strong><ul>
+<li>FastNN torch modules and tools for exporting models via. <code>TorchScript</code> tracing and scripting to a production environment</li>
+</ul>
+</li>
+<li><strong>Model Zoo</strong><ul>
+<li>Various exported models hosted in this repo via. git-lfs and AWS S3. Includes models from the HuggingFace's Transformers and 
+TorchVision</li>
+</ul>
+</li>
+<li><strong>Model Deployment</strong><ul>
+<li>Deploy models using Triton Inference Server on CPU/GPU-compatible server(s) with helm or docker</li>
+</ul>
+</li>
+<li><strong>FastNN Client</strong><ul>
+<li>Client wrapper for Triton Inference Server's client module for programmatic requests with python</li>
+</ul>
+</li>
+</ul>
+<h2 id="pre-requisites">Pre-Requisites:<a class="headerlink" href="#pre-requisites" title="Permanent link">&para;</a></h2>
+<p>Git LFS is required if you'd like to use any of the models provided by FastNN in <code>./model_repository</code>.</p>
+<p>Cloning this repository without Git LFS will clone a repository with LFS pointers, not the actual model.</p>
+<p>After the repository is cloned and Git LFS is installed, set up with <code>git lfs install</code>.</p>
+<p>Download specific models with:</p>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>lfs<span class="w"> </span>pull<span class="w"> </span>--include<span class="o">=</span><span class="s2">&quot;model_repository/&lt;path-to-model-dir&gt;&quot;</span><span class="w"> </span>--exclude<span class="o">=</span><span class="s2">&quot;&quot;</span>
+</code></pre></div>
+
+<p>Download ALL models with:</p>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>lfs<span class="w"> </span>pull
+
+<span class="c1"># Or</span>
+<span class="c1">#git lfs pull --include=&quot;*&quot; --exclude=&quot;&quot;</span>
+</code></pre></div>
+
+<h2 id="quickstart-and-installation">Quickstart and Installation:<a class="headerlink" href="#quickstart-and-installation" title="Permanent link">&para;</a></h2>
+<h3 id="pre-requisites_1"><em>Pre-requisites:</em><a class="headerlink" href="#pre-requisites_1" title="Permanent link">&para;</a></h3>
+<p>Requirements: Python 3.7+, PyTorch 1+, TorchVision 0.7+, Triton Client</p>
+<p>Optional: CUDA Compatible GPU, NVIDIA Drivers, cudnn (PyTorch pre-built wheels)</p>
+<ol>
+<li>
+<p>To install PyTorch with TorchVision, please refer to the installation instructions on their web page <a href="https://pytorch.org/get-started/locally/#start-locally">here</a>.</p>
+</li>
+<li>
+<p>The tritonclient package wheels are not hosted on the public PyPI server. We need to add the address of NVIDA's private python package index to the environment. You can complete these steps and install the tritonclient package by running the following.</p>
+</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="c1"># If you cloned this repo, you can just uncomment and run the one line below</span>
+<span class="c1">#sh ./scripts/install_triton_client.</span>
+pip<span class="w"> </span>install<span class="w"> </span>nvidia-pyindex
+pip<span class="w"> </span>install<span class="w"> </span>tritonclient<span class="o">[</span>all<span class="o">]</span>
+</code></pre></div>
+
+<h3 id="install-via-pip"><strong>Install via. pip</strong><a class="headerlink" href="#install-via-pip" title="Permanent link">&para;</a></h3>
+<p>Once the above requirements are set, you can install fastnn with the command below:</p>
+<div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>fastnn
+</code></pre></div>
+
+<p>If you are comfortable with the latest default stable releases of PyTorch you can skip step 1 in the pre-requisites and run <code>pip install fastnn[torch]</code> instead.</p>
+<h3 id="install-from-source-with-poetry-for-development"><strong>Install from source with Poetry for development</strong><a class="headerlink" href="#install-from-source-with-poetry-for-development" title="Permanent link">&para;</a></h3>
+<p>You will need to install poetry by referring to the installation instructions on their web page <a href="https://python-poetry.org/docs/#installation">here</a>.</p>
+<p>After cloning the repository, just run <code>poetry install</code> to install with the .lock file.</p>
+<p>Activate the virtual environment with the command below:</p>
+<div class="codehilite"><pre><span></span><code>poetry<span class="w"> </span>shell
+</code></pre></div>
+
+<h3 id="docker"><strong>Docker</strong><a class="headerlink" href="#docker" title="Permanent link">&para;</a></h3>
+<p>Official FastNN images are hosted on <a href="https://hub.docker.com/r/aychang/fastnn">Docker Hub</a>.</p>
+<p>Select FastNN package and image versions by referencing the <a href="https://andrewchang.dev/fastnn/index.html#fastnn-docker-release-selector-ubuntu-1804">documentation</a>. Development and runtime environments are available.</p>
+<p>Jupyter lab and notebook servers are accessible with notebook examples and terminal access <code>localhost:8888</code> with every image.</p>
+<p>Run the latest FastNN image by running below:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--gpus<span class="w"> </span>all<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>-p<span class="w"> </span><span class="m">8888</span>:8888<span class="w"> </span>aychang/fastnn:latest
+</code></pre></div>
+
+<p>Run images with specific configurations as can see in the example command below:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--gpus<span class="w"> </span>all<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>-p<span class="w"> </span><span class="m">8888</span>:8888<span class="w"> </span>aychang/fastnn:0.2.0-cuda11.6.0-runtime-ubuntu20.04-py3.7
+</code></pre></div>
+
+<h2 id="triton-inference-server-local-or-kubernetes-cluster">Triton Inference Server: Local or Kubernetes Cluster<a class="headerlink" href="#triton-inference-server-local-or-kubernetes-cluster" title="Permanent link">&para;</a></h2>
+<h3 id="local-deployment"><strong>Local Deployment</strong><a class="headerlink" href="#local-deployment" title="Permanent link">&para;</a></h3>
+<p>Requirements:
+  - Docker 19.03+</p>
+<p>GPU Inference Requirements:</p>
+<ul>
+<li>
+<p>NVIDIA CUDA-Compatible GPU</p>
+</li>
+<li>
+<p><a href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html">NVIDIA Container Toolkit (nvidia-docker)</a></p>
+</li>
+</ul>
+<p>Local deployment of the Triton Server uses the EXPLICIT model control mode. Local models must be explicitly specified with the <code>--load-model</code> 
+argument in <code>./scripts/start_triton_local.sh</code></p>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">MODEL_REPOSITORY</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/model_repository
+sh<span class="w"> </span>./scripts/start_triton_local.sh
+</code></pre></div>
+
+<h3 id="helm-chart-install-in-kubernetes-cluster"><strong>Helm Chart install in Kubernetes Cluster</strong><a class="headerlink" href="#helm-chart-install-in-kubernetes-cluster" title="Permanent link">&para;</a></h3>
+<p>Requirements: kubectl 1.17+, Helm 3+, Kubernetes 1.17+</p>
+<p>You can currently install the local FastNN helm chart with the following instuctions:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>./k8s
+helm<span class="w"> </span>install<span class="w"> </span>fastnn<span class="w"> </span>.
+<span class="nb">export</span><span class="w"> </span><span class="nv">MODEL_REPOSITORY</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/model_repository
+</code></pre></div>
+
+<p>Note: The current local helm chart installation deploys Triton using the NONE model control mode. All models available in the S3 Model Zoo will be deployed...good luck. 
+Deployed models and model control mode can be edited in the helm chart deployment configuration file.</p>
+<h1 id="license">License<a class="headerlink" href="#license" title="Permanent link">&para;</a></h1>
+<p>This project is licensed under the terms of the MIT license.</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.aecac24b.min.js"></script>
+      
+    
+  </body>
+</html>

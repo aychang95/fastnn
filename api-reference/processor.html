@@ -1,0 +1,2210 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Fast Neural Networks - A framework for deploying serializable and optimizable neural net models at scale in production via. the NVIDIA Triton Inference Server.">
+      
+      
+      
+        <link rel="canonical" href="https://github.com/aychang95/fastnn/api-reference/processor.html">
+      
+      
+        <link rel="prev" href="../inference_client.html">
+      
+      
+        <link rel="next" href="fastnn_modules.html">
+      
+      
+      <link rel="icon" href="../images/logo.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.7">
+    
+    
+      
+        <title>Processor - FastNN</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.4b4a2bd9.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="light-green" data-md-color-accent="indigo">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#transformersqaprocessor" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="FastNN" class="md-header__button md-logo" aria-label="FastNN" data-md-component="logo">
+      
+  <img src="../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FastNN
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Processor
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aychang95/fastnn" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    aychang95/fastnn
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="FastNN" class="md-nav__button md-logo" aria-label="FastNN" data-md-component="logo">
+      
+  <img src="../images/logo.png" alt="logo">
+
+    </a>
+    FastNN
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aychang95/fastnn" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    aychang95/fastnn
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FastNN Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_processing.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model_exporting.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exporting Models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model_zoo.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Model Zoo
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model_deployment.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Model Deployment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inference_client.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Inference Client
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Processor
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="processor.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Processor
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#transformersqaprocessor" class="md-nav__link">
+    TransformersQAProcessor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.nlp.question_answering.TransformersQAProcessor" class="md-nav__link">
+    fastnn.processors.nlp.question_answering.TransformersQAProcessor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.nlp.question_answering.TransformersQAProcessor.process" class="md-nav__link">
+    process()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.nlp.question_answering.TransformersQAProcessor.process_batch" class="md-nav__link">
+    process_batch()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.nlp.question_answering.TransformersQAProcessor.process_output_batch" class="md-nav__link">
+    process_output_batch()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transformerstokentaggingprocessor" class="md-nav__link">
+    TransformersTokenTaggingProcessor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor" class="md-nav__link">
+    fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor.process" class="md-nav__link">
+    process()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor.process_batch" class="md-nav__link">
+    process_batch()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor.process_output_batch" class="md-nav__link">
+    process_output_batch()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectdetectionprocessor" class="md-nav__link">
+    ObjectDetectionProcessor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.cv.object_detection.ObjectDetectionProcessor" class="md-nav__link">
+    fastnn.processors.cv.object_detection.ObjectDetectionProcessor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.cv.object_detection.ObjectDetectionProcessor.draw_bounding_boxes" class="md-nav__link">
+    draw_bounding_boxes()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.cv.object_detection.ObjectDetectionProcessor.process" class="md-nav__link">
+    process()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.cv.object_detection.ObjectDetectionProcessor.process_batch" class="md-nav__link">
+    process_batch()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.cv.object_detection.ObjectDetectionProcessor.process_output_batch" class="md-nav__link">
+    process_output_batch()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="fastnn_modules.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FastNN Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="exporter.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exporter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="fastnn_client.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FastNN Client
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#transformersqaprocessor" class="md-nav__link">
+    TransformersQAProcessor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.nlp.question_answering.TransformersQAProcessor" class="md-nav__link">
+    fastnn.processors.nlp.question_answering.TransformersQAProcessor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.nlp.question_answering.TransformersQAProcessor.process" class="md-nav__link">
+    process()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.nlp.question_answering.TransformersQAProcessor.process_batch" class="md-nav__link">
+    process_batch()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.nlp.question_answering.TransformersQAProcessor.process_output_batch" class="md-nav__link">
+    process_output_batch()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transformerstokentaggingprocessor" class="md-nav__link">
+    TransformersTokenTaggingProcessor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor" class="md-nav__link">
+    fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor.process" class="md-nav__link">
+    process()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor.process_batch" class="md-nav__link">
+    process_batch()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor.process_output_batch" class="md-nav__link">
+    process_output_batch()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectdetectionprocessor" class="md-nav__link">
+    ObjectDetectionProcessor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.cv.object_detection.ObjectDetectionProcessor" class="md-nav__link">
+    fastnn.processors.cv.object_detection.ObjectDetectionProcessor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.cv.object_detection.ObjectDetectionProcessor.draw_bounding_boxes" class="md-nav__link">
+    draw_bounding_boxes()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.cv.object_detection.ObjectDetectionProcessor.process" class="md-nav__link">
+    process()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.cv.object_detection.ObjectDetectionProcessor.process_batch" class="md-nav__link">
+    process_batch()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastnn.processors.cv.object_detection.ObjectDetectionProcessor.process_output_batch" class="md-nav__link">
+    process_output_batch()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Processor</h1>
+
+<h2 id="transformersqaprocessor"><code>TransformersQAProcessor</code><a class="headerlink" href="#transformersqaprocessor" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-object doc-class">
+
+<a id="fastnn.processors.nlp.question_answering.TransformersQAProcessor"></a>
+    <div class="doc doc-contents first">
+
+      <p>Question Answering Data Processor. Use this class to generate tensor inputs from human legible text/string data.
+This class can be used with a majority of the Bert architecture transformer models with the span-based extractive,
+Question Answering predictive head from Hugging Face.</p>
+<p>Usage:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">processor</span> <span class="o">=</span> <span class="n">TRansformersQAProcessor</span><span class="p">(</span><span class="n">model_name_or_path</span><span class="o">=</span><span class="s2">&quot;distilbert-base-cased-distilled-squad&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">processor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">],</span> <span class="n">context</span><span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">])</span>
+
+<span class="o">**</span><span class="n">Parameters</span><span class="p">:</span><span class="o">**</span>
+
+<span class="o">*</span> <span class="o">**</span><span class="n">model_name_or_path</span><span class="o">**</span> <span class="o">-</span> <span class="n">String</span> <span class="n">defining</span> <span class="n">HF</span> <span class="n">question</span> <span class="n">answering</span> <span class="n">model</span><span class="o">/</span><span class="n">tokenizer</span><span class="s1">&#39;s name</span>
+</code></pre></div>
+
+        <details class="quote">
+          <summary>Source code in <code>fastnn/processors/nlp/question_answering.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">TransformersQAProcessor</span><span class="p">(</span><span class="n">Processor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Question Answering Data Processor. Use this class to generate tensor inputs from human legible text/string data.</span>
+<span class="sd">    This class can be used with a majority of the Bert architecture transformer models with the span-based extractive,</span>
+<span class="sd">    Question Answering predictive head from Hugging Face.</span>
+
+<span class="sd">    Usage:</span>
+<span class="sd">    ```python</span>
+<span class="sd">    &gt;&gt;&gt; processor = TRansformersQAProcessor(model_name_or_path=&quot;distilbert-base-cased-distilled-squad&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; processor.process(query=[&quot;string&quot;], context[&quot;string&quot;])</span>
+
+<span class="sd">    **Parameters:**</span>
+
+<span class="sd">    * **model_name_or_path** - String defining HF question answering model/tokenizer&#39;s name</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">model_name_or_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;distilbert-base-cased-distilled-squad&quot;</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+            <span class="n">model_name_or_path</span><span class="p">,</span> <span class="n">use_fast</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>  <span class="c1"># Can&#39;t use fast tokenizer yet for QA `use_fast=True`</span>
+
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">context</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">max_seq_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
+        <span class="n">doc_stride</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="n">max_query_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">SquadExample</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">SquadFeatures</span><span class="p">],</span> <span class="n">Dataset</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate torch `Dataset` object from query/context string pairs using specified tokenizer from HF.</span>
+<span class="sd">        This provides clear tensor input representations for compatible models.</span>
+
+<span class="sd">        Returns a tuple `Dataset` and matching `SquadFeatures`</span>
+
+<span class="sd">        * **query** - List of query strings, must be same length as `context`</span>
+<span class="sd">        * **context** - List of context strings, must be same length as `query`</span>
+<span class="sd">        * **max_seq_length** - Maximum context token length. Check model configs to see max sequence length the model was trained with</span>
+<span class="sd">        * **doc_stride** - Number of token strides to take when splitting up context into chunks of size `max_seq_length`</span>
+<span class="sd">        * **max_query_length** - Maximum token length for queries</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">examples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_squad_examples</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">)</span>
+        <span class="n">features</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="n">squad_convert_examples_to_features</span><span class="p">(</span>
+            <span class="n">examples</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">,</span>
+            <span class="n">max_seq_length</span><span class="o">=</span><span class="n">max_seq_length</span><span class="p">,</span>
+            <span class="n">doc_stride</span><span class="o">=</span><span class="n">doc_stride</span><span class="p">,</span>
+            <span class="n">max_query_length</span><span class="o">=</span><span class="n">max_query_length</span><span class="p">,</span>
+            <span class="n">is_training</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">return_dataset</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span>
+            <span class="n">threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">examples</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">dataset</span>
+
+    <span class="k">def</span> <span class="nf">process_batch</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+        <span class="n">context</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+        <span class="n">mini_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="n">max_seq_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
+        <span class="n">doc_stride</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="n">max_query_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+        <span class="n">use_gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">SquadExample</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">SquadFeatures</span><span class="p">],</span> <span class="n">DataLoader</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate torch `DataLoader` object from query/context string pairs using specified tokenizer from HF.</span>
+<span class="sd">        This provides clear tensor input representations for compatible models in an easy to use batch</span>
+
+<span class="sd">        Returns a tuple of (List[`SquadExample`], List[`SquadFeatures`], `DataLoader`)</span>
+
+<span class="sd">        * **query** - List of query strings, must be same length as `context`</span>
+<span class="sd">        * **context** - List of context strings, must be same length as `query`</span>
+<span class="sd">        * **mini_batch_size** - Batch size for inference</span>
+<span class="sd">        * **max_seq_length** - Maximum context token length. Check model configs to see max sequence length the model was trained with</span>
+<span class="sd">        * **doc_stride** - Number of token strides to take when splitting up context into chunks of size `max_seq_length`</span>
+<span class="sd">        * **max_query_length** - Maximum token length for queries</span>
+<span class="sd">        * **use_gpu** - Bool for using gpu or cpu. If set True but no gpu devices available, model will default to using cpu</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+                <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;GPU not available&quot;</span><span class="p">)</span>
+                <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+
+        <span class="n">examples</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">(</span>
+            <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+            <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span>
+            <span class="n">max_seq_length</span><span class="o">=</span><span class="n">max_seq_length</span><span class="p">,</span>
+            <span class="n">doc_stride</span><span class="o">=</span><span class="n">doc_stride</span><span class="p">,</span>
+            <span class="n">max_query_length</span><span class="o">=</span><span class="n">max_query_length</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+            <span class="n">dataset</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">mini_batch_size</span><span class="p">,</span>
+            <span class="n">collate_fn</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qa_collate_fn</span><span class="p">(</span><span class="n">x</span><span class="p">)],</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">examples</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">dataloader</span>
+
+    <span class="k">def</span> <span class="nf">process_output</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]],</span>
+        <span class="n">examples</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SquadExample</span><span class="p">],</span>
+        <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SquadFeatures</span><span class="p">],</span>
+        <span class="n">n_best_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">max_answer_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="n">do_lower_case</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">verbose_logging</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">version_2_with_negative</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">null_score_diff_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">process_output_batch</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]],</span>
+        <span class="n">examples</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SquadExample</span><span class="p">],</span>
+        <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SquadFeatures</span><span class="p">],</span>
+        <span class="n">n_best_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">max_answer_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+        <span class="n">do_lower_case</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">verbose_logging</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">version_2_with_negative</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">null_score_diff_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">OrderedDict</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process output of Transformers QA model into human legible results.</span>
+
+<span class="sd">        * **outputs** - List of batch output tensors from a model&#39;s forward pass</span>
+<span class="sd">        * **examples** - List of `SquadExample` objects for each original context/query pair used as input. This is returned from the built-in `process()` or `process_batch()` methods</span>
+<span class="sd">        * **features** - List of `SquadFeature` objects for each context/query pair over the original doc_stride lengths. This is also returned from the built-in `process()` or `process_batch()` methods</span>
+<span class="sd">        * **n_best_size** - Number of top n results you want</span>
+<span class="sd">        * **max_answer_length** - Maximum token length for answers that are returned</span>
+<span class="sd">        * **do_lower_case** - Set as `True` if using uncased QA models</span>
+<span class="sd">        * **verbose_logging** - Set True if you want prediction verbose loggings</span>
+<span class="sd">        * **version_2_with_negative** - Set as True if using QA model with SQUAD2.0</span>
+<span class="sd">        * **null_score_diff_threshold** - Threshold for predicting null(no answer) in Squad 2.0 Model.  Default is 0.0.  Raise this if you want fewer null answers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Generate results per example query</span>
+        <span class="n">all_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SquadResult</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+            <span class="n">example_indices</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">example_index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">example_indices</span><span class="p">):</span>
+                <span class="n">start_logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_list</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">end_logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_list</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">eval_feature</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">example_index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()]</span>
+                <span class="n">unique_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">eval_feature</span><span class="o">.</span><span class="n">unique_id</span><span class="p">)</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">SquadResult</span><span class="p">(</span><span class="n">unique_id</span><span class="p">,</span> <span class="n">start_logits</span><span class="p">,</span> <span class="n">end_logits</span><span class="p">)</span>
+                <span class="n">all_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="c1"># Compute predictions based off logits on a per example basis</span>
+        <span class="n">answers</span><span class="p">,</span> <span class="n">n_best</span> <span class="o">=</span> <span class="n">compute_predictions_logits</span><span class="p">(</span>
+            <span class="n">all_examples</span><span class="o">=</span><span class="n">examples</span><span class="p">,</span>
+            <span class="n">all_features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
+            <span class="n">all_results</span><span class="o">=</span><span class="n">all_results</span><span class="p">,</span>
+            <span class="n">n_best_size</span><span class="o">=</span><span class="n">n_best_size</span><span class="p">,</span>
+            <span class="n">max_answer_length</span><span class="o">=</span><span class="n">max_answer_length</span><span class="p">,</span>
+            <span class="n">do_lower_case</span><span class="o">=</span><span class="n">do_lower_case</span><span class="p">,</span>
+            <span class="n">verbose_logging</span><span class="o">=</span><span class="n">verbose_logging</span><span class="p">,</span>
+            <span class="n">version_2_with_negative</span><span class="o">=</span><span class="n">version_2_with_negative</span><span class="p">,</span>
+            <span class="n">null_score_diff_threshold</span><span class="o">=</span><span class="n">null_score_diff_threshold</span><span class="p">,</span>
+            <span class="n">tokenizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">answers</span><span class="p">,</span> <span class="n">n_best</span>
+
+    <span class="k">def</span> <span class="nf">_qa_collate_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="n">default_collate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="c1"># Generate same batch dims for scalars to address future batch inferencing</span>
+        <span class="n">batch</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">batch</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">batch</span>
+
+    <span class="k">def</span> <span class="nf">_to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">tensor</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_generate_squad_examples</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">context</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SquadExample</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate HF Squad Example objects with query/context pairs&quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+        <span class="n">examples</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;qa&quot;</span>
+        <span class="n">is_impossible</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">answer_text</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">start_position_character</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">answers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;answer&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">context</span><span class="p">)):</span>
+            <span class="n">example</span> <span class="o">=</span> <span class="n">SquadExample</span><span class="p">(</span>
+                <span class="n">qas_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span>
+                <span class="n">question_text</span><span class="o">=</span><span class="n">q</span><span class="p">,</span>
+                <span class="n">context_text</span><span class="o">=</span><span class="n">c</span><span class="p">,</span>
+                <span class="n">answer_text</span><span class="o">=</span><span class="n">answer_text</span><span class="p">,</span>
+                <span class="n">start_position_character</span><span class="o">=</span><span class="n">start_position_character</span><span class="p">,</span>
+                <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+                <span class="n">is_impossible</span><span class="o">=</span><span class="n">is_impossible</span><span class="p">,</span>
+                <span class="n">answers</span><span class="o">=</span><span class="n">answers</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">examples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">example</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">examples</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="fastnn.processors.nlp.question_answering.TransformersQAProcessor.process" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">max_seq_length</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">doc_stride</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">max_query_length</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span></code>
+
+
+<a href="#fastnn.processors.nlp.question_answering.TransformersQAProcessor.process" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Generate torch <code>Dataset</code> object from query/context string pairs using specified tokenizer from HF.
+This provides clear tensor input representations for compatible models.</p>
+<p>Returns a tuple <code>Dataset</code> and matching <code>SquadFeatures</code></p>
+<ul>
+<li><strong>query</strong> - List of query strings, must be same length as <code>context</code></li>
+<li><strong>context</strong> - List of context strings, must be same length as <code>query</code></li>
+<li><strong>max_seq_length</strong> - Maximum context token length. Check model configs to see max sequence length the model was trained with</li>
+<li><strong>doc_stride</strong> - Number of token strides to take when splitting up context into chunks of size <code>max_seq_length</code></li>
+<li><strong>max_query_length</strong> - Maximum token length for queries</li>
+</ul>
+
+        <details class="quote">
+          <summary>Source code in <code>fastnn/processors/nlp/question_answering.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">process</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">context</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">max_seq_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
+    <span class="n">doc_stride</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+    <span class="n">max_query_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">SquadExample</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">SquadFeatures</span><span class="p">],</span> <span class="n">Dataset</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate torch `Dataset` object from query/context string pairs using specified tokenizer from HF.</span>
+<span class="sd">    This provides clear tensor input representations for compatible models.</span>
+
+<span class="sd">    Returns a tuple `Dataset` and matching `SquadFeatures`</span>
+
+<span class="sd">    * **query** - List of query strings, must be same length as `context`</span>
+<span class="sd">    * **context** - List of context strings, must be same length as `query`</span>
+<span class="sd">    * **max_seq_length** - Maximum context token length. Check model configs to see max sequence length the model was trained with</span>
+<span class="sd">    * **doc_stride** - Number of token strides to take when splitting up context into chunks of size `max_seq_length`</span>
+<span class="sd">    * **max_query_length** - Maximum token length for queries</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">examples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_squad_examples</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">)</span>
+    <span class="n">features</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="n">squad_convert_examples_to_features</span><span class="p">(</span>
+        <span class="n">examples</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">,</span>
+        <span class="n">max_seq_length</span><span class="o">=</span><span class="n">max_seq_length</span><span class="p">,</span>
+        <span class="n">doc_stride</span><span class="o">=</span><span class="n">doc_stride</span><span class="p">,</span>
+        <span class="n">max_query_length</span><span class="o">=</span><span class="n">max_query_length</span><span class="p">,</span>
+        <span class="n">is_training</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">return_dataset</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span>
+        <span class="n">threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">examples</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">dataset</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="fastnn.processors.nlp.question_answering.TransformersQAProcessor.process_batch" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">process_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">mini_batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">max_seq_length</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">doc_stride</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">max_query_length</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+
+<a href="#fastnn.processors.nlp.question_answering.TransformersQAProcessor.process_batch" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Generate torch <code>DataLoader</code> object from query/context string pairs using specified tokenizer from HF.
+This provides clear tensor input representations for compatible models in an easy to use batch</p>
+<p>Returns a tuple of (List[<code>SquadExample</code>], List[<code>SquadFeatures</code>], <code>DataLoader</code>)</p>
+<ul>
+<li><strong>query</strong> - List of query strings, must be same length as <code>context</code></li>
+<li><strong>context</strong> - List of context strings, must be same length as <code>query</code></li>
+<li><strong>mini_batch_size</strong> - Batch size for inference</li>
+<li><strong>max_seq_length</strong> - Maximum context token length. Check model configs to see max sequence length the model was trained with</li>
+<li><strong>doc_stride</strong> - Number of token strides to take when splitting up context into chunks of size <code>max_seq_length</code></li>
+<li><strong>max_query_length</strong> - Maximum token length for queries</li>
+<li><strong>use_gpu</strong> - Bool for using gpu or cpu. If set True but no gpu devices available, model will default to using cpu</li>
+</ul>
+
+        <details class="quote">
+          <summary>Source code in <code>fastnn/processors/nlp/question_answering.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">process_batch</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+    <span class="n">context</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+    <span class="n">mini_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="n">max_seq_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
+    <span class="n">doc_stride</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+    <span class="n">max_query_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+    <span class="n">use_gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">SquadExample</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">SquadFeatures</span><span class="p">],</span> <span class="n">DataLoader</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate torch `DataLoader` object from query/context string pairs using specified tokenizer from HF.</span>
+<span class="sd">    This provides clear tensor input representations for compatible models in an easy to use batch</span>
+
+<span class="sd">    Returns a tuple of (List[`SquadExample`], List[`SquadFeatures`], `DataLoader`)</span>
+
+<span class="sd">    * **query** - List of query strings, must be same length as `context`</span>
+<span class="sd">    * **context** - List of context strings, must be same length as `query`</span>
+<span class="sd">    * **mini_batch_size** - Batch size for inference</span>
+<span class="sd">    * **max_seq_length** - Maximum context token length. Check model configs to see max sequence length the model was trained with</span>
+<span class="sd">    * **doc_stride** - Number of token strides to take when splitting up context into chunks of size `max_seq_length`</span>
+<span class="sd">    * **max_query_length** - Maximum token length for queries</span>
+<span class="sd">    * **use_gpu** - Bool for using gpu or cpu. If set True but no gpu devices available, model will default to using cpu</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;GPU not available&quot;</span><span class="p">)</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+
+    <span class="n">examples</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">(</span>
+        <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+        <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span>
+        <span class="n">max_seq_length</span><span class="o">=</span><span class="n">max_seq_length</span><span class="p">,</span>
+        <span class="n">doc_stride</span><span class="o">=</span><span class="n">doc_stride</span><span class="p">,</span>
+        <span class="n">max_query_length</span><span class="o">=</span><span class="n">max_query_length</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+        <span class="n">dataset</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">mini_batch_size</span><span class="p">,</span>
+        <span class="n">collate_fn</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qa_collate_fn</span><span class="p">(</span><span class="n">x</span><span class="p">)],</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">examples</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">dataloader</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="fastnn.processors.nlp.question_answering.TransformersQAProcessor.process_output_batch" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">process_output_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">examples</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">n_best_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_answer_length</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">do_lower_case</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose_logging</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">version_2_with_negative</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">null_score_diff_threshold</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span></code>
+
+
+<a href="#fastnn.processors.nlp.question_answering.TransformersQAProcessor.process_output_batch" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Process output of Transformers QA model into human legible results.</p>
+<ul>
+<li><strong>outputs</strong> - List of batch output tensors from a model's forward pass</li>
+<li><strong>examples</strong> - List of <code>SquadExample</code> objects for each original context/query pair used as input. This is returned from the built-in <code>process()</code> or <code>process_batch()</code> methods</li>
+<li><strong>features</strong> - List of <code>SquadFeature</code> objects for each context/query pair over the original doc_stride lengths. This is also returned from the built-in <code>process()</code> or <code>process_batch()</code> methods</li>
+<li><strong>n_best_size</strong> - Number of top n results you want</li>
+<li><strong>max_answer_length</strong> - Maximum token length for answers that are returned</li>
+<li><strong>do_lower_case</strong> - Set as <code>True</code> if using uncased QA models</li>
+<li><strong>verbose_logging</strong> - Set True if you want prediction verbose loggings</li>
+<li><strong>version_2_with_negative</strong> - Set as True if using QA model with SQUAD2.0</li>
+<li><strong>null_score_diff_threshold</strong> - Threshold for predicting null(no answer) in Squad 2.0 Model.  Default is 0.0.  Raise this if you want fewer null answers</li>
+</ul>
+
+        <details class="quote">
+          <summary>Source code in <code>fastnn/processors/nlp/question_answering.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">process_output_batch</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]],</span>
+    <span class="n">examples</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SquadExample</span><span class="p">],</span>
+    <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SquadFeatures</span><span class="p">],</span>
+    <span class="n">n_best_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="n">max_answer_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+    <span class="n">do_lower_case</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose_logging</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">version_2_with_negative</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">null_score_diff_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">OrderedDict</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process output of Transformers QA model into human legible results.</span>
+
+<span class="sd">    * **outputs** - List of batch output tensors from a model&#39;s forward pass</span>
+<span class="sd">    * **examples** - List of `SquadExample` objects for each original context/query pair used as input. This is returned from the built-in `process()` or `process_batch()` methods</span>
+<span class="sd">    * **features** - List of `SquadFeature` objects for each context/query pair over the original doc_stride lengths. This is also returned from the built-in `process()` or `process_batch()` methods</span>
+<span class="sd">    * **n_best_size** - Number of top n results you want</span>
+<span class="sd">    * **max_answer_length** - Maximum token length for answers that are returned</span>
+<span class="sd">    * **do_lower_case** - Set as `True` if using uncased QA models</span>
+<span class="sd">    * **verbose_logging** - Set True if you want prediction verbose loggings</span>
+<span class="sd">    * **version_2_with_negative** - Set as True if using QA model with SQUAD2.0</span>
+<span class="sd">    * **null_score_diff_threshold** - Threshold for predicting null(no answer) in Squad 2.0 Model.  Default is 0.0.  Raise this if you want fewer null answers</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Generate results per example query</span>
+    <span class="n">all_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SquadResult</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+        <span class="n">example_indices</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">example_index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">example_indices</span><span class="p">):</span>
+            <span class="n">start_logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_list</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">end_logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_list</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">eval_feature</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">example_index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()]</span>
+            <span class="n">unique_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">eval_feature</span><span class="o">.</span><span class="n">unique_id</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">SquadResult</span><span class="p">(</span><span class="n">unique_id</span><span class="p">,</span> <span class="n">start_logits</span><span class="p">,</span> <span class="n">end_logits</span><span class="p">)</span>
+            <span class="n">all_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+    <span class="c1"># Compute predictions based off logits on a per example basis</span>
+    <span class="n">answers</span><span class="p">,</span> <span class="n">n_best</span> <span class="o">=</span> <span class="n">compute_predictions_logits</span><span class="p">(</span>
+        <span class="n">all_examples</span><span class="o">=</span><span class="n">examples</span><span class="p">,</span>
+        <span class="n">all_features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
+        <span class="n">all_results</span><span class="o">=</span><span class="n">all_results</span><span class="p">,</span>
+        <span class="n">n_best_size</span><span class="o">=</span><span class="n">n_best_size</span><span class="p">,</span>
+        <span class="n">max_answer_length</span><span class="o">=</span><span class="n">max_answer_length</span><span class="p">,</span>
+        <span class="n">do_lower_case</span><span class="o">=</span><span class="n">do_lower_case</span><span class="p">,</span>
+        <span class="n">verbose_logging</span><span class="o">=</span><span class="n">verbose_logging</span><span class="p">,</span>
+        <span class="n">version_2_with_negative</span><span class="o">=</span><span class="n">version_2_with_negative</span><span class="p">,</span>
+        <span class="n">null_score_diff_threshold</span><span class="o">=</span><span class="n">null_score_diff_threshold</span><span class="p">,</span>
+        <span class="n">tokenizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">answers</span><span class="p">,</span> <span class="n">n_best</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+<h2 id="transformerstokentaggingprocessor"><code>TransformersTokenTaggingProcessor</code><a class="headerlink" href="#transformerstokentaggingprocessor" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-object doc-class">
+
+<a id="fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor"></a>
+    <div class="doc doc-contents first">
+
+      <p>Token Tagging Data Processor. Use this class to generate tensor inputs from human legible text/string data.
+This class can be used with a majority of the Bert architecture transformer models with a token-level predictive head
+for token classification from Hugging Face.</p>
+<p>Usage:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">processor</span> <span class="o">=</span> <span class="n">TransformersTokenTaggingProcessor</span><span class="p">(</span><span class="n">model_name_or_path</span><span class="o">=</span><span class="s2">&quot;dbmdz/bert-large-cased-finetuned-conll03-english&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">processor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">])</span>
+
+<span class="o">**</span><span class="n">Parameters</span><span class="p">:</span><span class="o">**</span>
+
+<span class="o">*</span> <span class="o">**</span><span class="n">model_name_or_path</span><span class="o">**</span> <span class="o">-</span> <span class="n">String</span> <span class="n">defining</span> <span class="n">HF</span> <span class="n">token</span> <span class="n">tagging</span> <span class="n">model</span><span class="o">/</span><span class="n">tokenizer</span><span class="s1">&#39;s name</span>
+<span class="o">*</span> <span class="o">**</span><span class="n">label_strings</span><span class="o">**</span> <span class="o">-</span> <span class="n">List</span> <span class="n">of</span> <span class="n">strings</span> <span class="n">that</span> <span class="n">specify</span> <span class="n">label</span> <span class="n">strings</span> <span class="k">with</span> <span class="n">index</span> <span class="k">as</span> <span class="n">key</span> <span class="k">for</span> <span class="n">this</span> <span class="n">specific</span> <span class="n">processor</span>
+</code></pre></div>
+
+        <details class="quote">
+          <summary>Source code in <code>fastnn/processors/nlp/token_tagging.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">TransformersTokenTaggingProcessor</span><span class="p">(</span><span class="n">Processor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Token Tagging Data Processor. Use this class to generate tensor inputs from human legible text/string data.</span>
+<span class="sd">    This class can be used with a majority of the Bert architecture transformer models with a token-level predictive head</span>
+<span class="sd">    for token classification from Hugging Face.</span>
+
+<span class="sd">    Usage:</span>
+<span class="sd">    ```python</span>
+<span class="sd">    &gt;&gt;&gt; processor = TransformersTokenTaggingProcessor(model_name_or_path=&quot;dbmdz/bert-large-cased-finetuned-conll03-english&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; processor.process(text=[&quot;string&quot;])</span>
+
+<span class="sd">    **Parameters:**</span>
+
+<span class="sd">    * **model_name_or_path** - String defining HF token tagging model/tokenizer&#39;s name</span>
+<span class="sd">    * **label_strings** - List of strings that specify label strings with index as key for this specific processor</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">model_name_or_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;dbmdz/bert-large-cased-finetuned-conll03-english&quot;</span><span class="p">,</span>
+        <span class="n">label_strings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;O&quot;</span><span class="p">,</span>  <span class="c1"># Outside of a named entity</span>
+            <span class="s2">&quot;B-MISC&quot;</span><span class="p">,</span>  <span class="c1"># Beginning of a miscellaneous entity right after another miscellaneous entity</span>
+            <span class="s2">&quot;I-MISC&quot;</span><span class="p">,</span>  <span class="c1"># Miscellaneous entity</span>
+            <span class="s2">&quot;B-PER&quot;</span><span class="p">,</span>  <span class="c1"># Beginning of a person&#39;s name right after another person&#39;s name</span>
+            <span class="s2">&quot;I-PER&quot;</span><span class="p">,</span>  <span class="c1"># Person&#39;s name</span>
+            <span class="s2">&quot;B-ORG&quot;</span><span class="p">,</span>  <span class="c1"># Beginning of an organisation right after another organisation</span>
+            <span class="s2">&quot;I-ORG&quot;</span><span class="p">,</span>  <span class="c1"># Organisation</span>
+            <span class="s2">&quot;B-LOC&quot;</span><span class="p">,</span>  <span class="c1"># Beginning of a location right after another location</span>
+            <span class="s2">&quot;I-LOC&quot;</span><span class="p">,</span>  <span class="c1"># Location</span>
+        <span class="p">],</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+            <span class="n">model_name_or_path</span><span class="p">,</span> <span class="n">use_fast</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_strings</span> <span class="o">=</span> <span class="n">label_strings</span>
+
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">text</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">max_seq_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate torch `Dataset` object from query/context string pairs using specified tokenizer from HF.</span>
+<span class="sd">        This provides clear tensor input representations for compatible models.</span>
+
+<span class="sd">        Returns a `Dataset`</span>
+
+<span class="sd">        * **text** - List of text strings</span>
+<span class="sd">        * **max_seq_length** - Maximum context token length. Check model configs to see max sequence length the model was trained with</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;max_length&quot;</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span>
+            <span class="n">tokens</span><span class="p">[</span><span class="s2">&quot;input_ids&quot;</span><span class="p">],</span>
+            <span class="n">tokens</span><span class="p">[</span><span class="s2">&quot;attention_mask&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dataset</span>
+
+    <span class="k">def</span> <span class="nf">process_batch</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">text</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+        <span class="n">mini_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="n">max_seq_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
+        <span class="n">use_gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate torch `DataLoader` object from text strings using specified tokenizer from HF.</span>
+<span class="sd">        This provides clear tensor input representations for compatible models in an easy to use batch</span>
+
+<span class="sd">        Returns a `DataLoader`</span>
+
+<span class="sd">        * **text** - List of text strings</span>
+<span class="sd">        * **mini_batch_size** - Batch size for inference</span>
+<span class="sd">        * **max_seq_length** - Maximum context token length. Check model configs to see max sequence length the model was trained with</span>
+<span class="sd">        * **use_gpu** - Bool for using gpu or cpu. If set True but no gpu devices available, model will default to using cpu</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+                <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;GPU not available&quot;</span><span class="p">)</span>
+                <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+
+        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+            <span class="n">dataset</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">mini_batch_size</span><span class="p">,</span>
+            <span class="n">collate_fn</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collate_fn</span><span class="p">(</span><span class="n">x</span><span class="p">)],</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dataloader</span>
+
+    <span class="k">def</span> <span class="nf">process_output</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]],</span>
+    <span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">process_output_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process output of Transformers NER model</span>
+
+<span class="sd">        * **outputs** - List of batch output tensors from a model&#39;s forward pass</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">logits</span><span class="p">,</span> <span class="n">input_ids</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+            <span class="n">tokens_batch</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">convert_ids_to_tokens</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">input_ids</span><span class="p">]</span>
+            <span class="n">argmax_batch</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">logits</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens_batch</span><span class="p">)):</span>
+                <span class="c1"># Filter out padding</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_strings</span><span class="p">[</span><span class="n">prediction</span><span class="p">])</span>
+                        <span class="k">for</span> <span class="n">token</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                            <span class="n">tokens_batch</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">argmax_batch</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+                        <span class="p">)</span>
+                        <span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="s2">&quot;[PAD]&quot;</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">results</span>
+
+    <span class="k">def</span> <span class="nf">_collate_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="n">default_collate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">batch</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor.process" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">max_seq_length</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span></code>
+
+
+<a href="#fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor.process" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Generate torch <code>Dataset</code> object from query/context string pairs using specified tokenizer from HF.
+This provides clear tensor input representations for compatible models.</p>
+<p>Returns a <code>Dataset</code></p>
+<ul>
+<li><strong>text</strong> - List of text strings</li>
+<li><strong>max_seq_length</strong> - Maximum context token length. Check model configs to see max sequence length the model was trained with</li>
+</ul>
+
+        <details class="quote">
+          <summary>Source code in <code>fastnn/processors/nlp/token_tagging.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">process</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">text</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">max_seq_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate torch `Dataset` object from query/context string pairs using specified tokenizer from HF.</span>
+<span class="sd">    This provides clear tensor input representations for compatible models.</span>
+
+<span class="sd">    Returns a `Dataset`</span>
+
+<span class="sd">    * **text** - List of text strings</span>
+<span class="sd">    * **max_seq_length** - Maximum context token length. Check model configs to see max sequence length the model was trained with</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;max_length&quot;</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span>
+        <span class="n">tokens</span><span class="p">[</span><span class="s2">&quot;input_ids&quot;</span><span class="p">],</span>
+        <span class="n">tokens</span><span class="p">[</span><span class="s2">&quot;attention_mask&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dataset</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor.process_batch" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">process_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">mini_batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">max_seq_length</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+
+<a href="#fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor.process_batch" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Generate torch <code>DataLoader</code> object from text strings using specified tokenizer from HF.
+This provides clear tensor input representations for compatible models in an easy to use batch</p>
+<p>Returns a <code>DataLoader</code></p>
+<ul>
+<li><strong>text</strong> - List of text strings</li>
+<li><strong>mini_batch_size</strong> - Batch size for inference</li>
+<li><strong>max_seq_length</strong> - Maximum context token length. Check model configs to see max sequence length the model was trained with</li>
+<li><strong>use_gpu</strong> - Bool for using gpu or cpu. If set True but no gpu devices available, model will default to using cpu</li>
+</ul>
+
+        <details class="quote">
+          <summary>Source code in <code>fastnn/processors/nlp/token_tagging.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">process_batch</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">text</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+    <span class="n">mini_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="n">max_seq_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
+    <span class="n">use_gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate torch `DataLoader` object from text strings using specified tokenizer from HF.</span>
+<span class="sd">    This provides clear tensor input representations for compatible models in an easy to use batch</span>
+
+<span class="sd">    Returns a `DataLoader`</span>
+
+<span class="sd">    * **text** - List of text strings</span>
+<span class="sd">    * **mini_batch_size** - Batch size for inference</span>
+<span class="sd">    * **max_seq_length** - Maximum context token length. Check model configs to see max sequence length the model was trained with</span>
+<span class="sd">    * **use_gpu** - Bool for using gpu or cpu. If set True but no gpu devices available, model will default to using cpu</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;GPU not available&quot;</span><span class="p">)</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+
+    <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+        <span class="n">dataset</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">mini_batch_size</span><span class="p">,</span>
+        <span class="n">collate_fn</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collate_fn</span><span class="p">(</span><span class="n">x</span><span class="p">)],</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dataloader</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor.process_output_batch" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">process_output_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span></code>
+
+
+<a href="#fastnn.processors.nlp.token_tagging.TransformersTokenTaggingProcessor.process_output_batch" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Process output of Transformers NER model</p>
+<ul>
+<li><strong>outputs</strong> - List of batch output tensors from a model's forward pass</li>
+</ul>
+
+        <details class="quote">
+          <summary>Source code in <code>fastnn/processors/nlp/token_tagging.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">process_output_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process output of Transformers NER model</span>
+
+<span class="sd">    * **outputs** - List of batch output tensors from a model&#39;s forward pass</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">logits</span><span class="p">,</span> <span class="n">input_ids</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+        <span class="n">tokens_batch</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">convert_ids_to_tokens</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">input_ids</span><span class="p">]</span>
+        <span class="n">argmax_batch</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">logits</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens_batch</span><span class="p">)):</span>
+            <span class="c1"># Filter out padding</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_strings</span><span class="p">[</span><span class="n">prediction</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">token</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                        <span class="n">tokens_batch</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">argmax_batch</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="s2">&quot;[PAD]&quot;</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+<h2 id="objectdetectionprocessor"><code>ObjectDetectionProcessor</code><a class="headerlink" href="#objectdetectionprocessor" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-object doc-class">
+
+<a id="fastnn.processors.cv.object_detection.ObjectDetectionProcessor"></a>
+    <div class="doc doc-contents first">
+
+      <p>Object Detection processor dealing with image files or 3xHxW formatted images and boxes, scores, labels out processing.
+Since most resizing and padding transforms are done by the object detection models in PyTorch, datasets and dataloaders willl
+generate batches of images as lists.</p>
+<p>Usage:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">processor</span> <span class="o">=</span> <span class="n">ObjectDetectionProcessor</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">processor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">file_paths</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;file_path.png&quot;</span><span class="p">])</span>
+
+<span class="o">**</span><span class="n">Parameters</span><span class="p">:</span><span class="o">**</span>
+<span class="o">*</span> <span class="o">**</span><span class="n">label_strings</span><span class="o">**</span> <span class="o">-</span> <span class="n">List</span> <span class="n">of</span> <span class="n">strings</span> <span class="n">that</span> <span class="n">specify</span> <span class="n">label</span> <span class="n">strings</span> <span class="k">with</span> <span class="n">index</span> <span class="k">as</span> <span class="n">key</span> <span class="k">for</span> <span class="n">this</span> <span class="n">specific</span> <span class="n">processor</span>
+</code></pre></div>
+
+        <details class="quote">
+          <summary>Source code in <code>fastnn/processors/cv/object_detection.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">ObjectDetectionProcessor</span><span class="p">(</span><span class="n">Processor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Object Detection processor dealing with image files or 3xHxW formatted images and boxes, scores, labels out processing.</span>
+<span class="sd">    Since most resizing and padding transforms are done by the object detection models in PyTorch, datasets and dataloaders willl</span>
+<span class="sd">    generate batches of images as lists.</span>
+
+<span class="sd">    Usage:</span>
+<span class="sd">    ```python</span>
+<span class="sd">    &gt;&gt;&gt; processor = ObjectDetectionProcessor()</span>
+<span class="sd">    &gt;&gt;&gt; processor.process(file_paths=[&quot;file_path.png&quot;])</span>
+
+<span class="sd">    **Parameters:**</span>
+<span class="sd">    * **label_strings** - List of strings that specify label strings with index as key for this specific processor</span>
+
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_strings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_strings</span> <span class="o">=</span> <span class="n">label_strings</span>
+
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">transforms</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">ConvertImageDtype</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">),</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dataset</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate torch `Dataset` object from list of file paths or image Tensors.</span>
+<span class="sd">        This provides clear tensor input representations for compatible models.</span>
+
+<span class="sd">        Returns a Dataset</span>
+
+<span class="sd">        * **dir_path** - String path to directory of images you&#39;d like to process</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">ImageDataset</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dataset</span>
+
+    <span class="k">def</span> <span class="nf">process_batch</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">transforms</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">ConvertImageDtype</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">),</span>
+        <span class="n">mini_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="n">use_gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate torch `Dataloader` object from data directory path.</span>
+<span class="sd">        This provides clear tensor input representations for compatible models.</span>
+
+<span class="sd">        Returns a `Dataloader`</span>
+
+<span class="sd">        * **dir_path** - String path to directory of images you&#39;d like to process</span>
+<span class="sd">        * **mini_batch_size** - Batch size for inference</span>
+<span class="sd">        * **use_gpu** - Bool for using gpu or cpu. If set True but no gpu devices available, model will default to using cpu</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+                <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;GPU not available&quot;</span><span class="p">)</span>
+                <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+
+        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">dir_path</span><span class="o">=</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">)</span>
+
+        <span class="c1"># Instead of a tensor batch, the lambda collate_fn will provide a list batch</span>
+        <span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+            <span class="n">dataset</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">mini_batch_size</span><span class="p">,</span>
+            <span class="n">collate_fn</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[[</span><span class="n">t</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_od_collate_fn</span><span class="p">(</span><span class="n">x</span><span class="p">)]],</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dataloader</span>
+
+    <span class="k">def</span> <span class="nf">process_output</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">process_output_batch</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]],</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process output of object detection model into human legible results.</span>
+<span class="sd">        Outputs from `FasterRCNNModule`</span>
+
+
+<span class="sd">        Returns batched results of list of list of tuples containing boxed images in tensor and numpy format</span>
+
+<span class="sd">        * **outputs** - List of batch output tensors from a model&#39;s forward pass</span>
+<span class="sd">        * **dataset** - Corresponding dataset with originial images matched with model outputs</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Labeled Images</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">out</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">outputs</span><span class="p">):</span>
+            <span class="n">labeled_images</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">label_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">),</span> <span class="mi">3</span><span class="p">):</span>
+                <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">label_strings</span><span class="p">[</span><span class="n">o</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">out</span><span class="p">[</span><span class="n">label_idx</span><span class="p">]]</span>
+
+                <span class="n">unique_labels</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+                <span class="n">label_colors_map</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">unique_labels</span><span class="p">:</span>
+                    <span class="n">label_colors_map</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+                    <span class="p">)</span>
+
+                <span class="n">label_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">label_colors_map</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span>
+
+                <span class="n">output_tensor</span><span class="p">,</span> <span class="n">output_numpy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_bounding_boxes</span><span class="p">(</span>
+                    <span class="n">ConvertImageDtype</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">uint8</span><span class="p">)(</span>
+                        <span class="n">dataset</span><span class="p">[</span><span class="n">idx</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="o">//</span> <span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">label_idx</span> <span class="o">//</span> <span class="mi">3</span><span class="p">]</span>
+                    <span class="p">),</span>
+                    <span class="n">out</span><span class="p">[</span><span class="n">label_idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
+                    <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+                    <span class="n">colors</span><span class="o">=</span><span class="n">label_colors</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">labeled_images</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">output_tensor</span><span class="p">,</span> <span class="n">output_numpy</span><span class="p">))</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">labeled_images</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">results</span>
+
+    <span class="k">def</span> <span class="nf">_od_collate_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Custom collate fn to output dynamic image batches without same-dim requirements via. `stack`.</span>
+<span class="sd">        This is not technically a &quot;correct&quot; collate_fn for most of torch&#39;s vision models. Should be wrapped as a list</span>
+<span class="sd">        in the lambda collate fn.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">img</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">draw_bounding_boxes</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">image</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">boxes</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">colors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">font</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;arial.ttf&quot;</span><span class="p">,</span>
+        <span class="n">font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">]:</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Added and modified from TorchVision utils.</span>
+<span class="sd">        Draws bounding boxes on given image.</span>
+<span class="sd">        The values of the input image should be uint8 between 0 and 255.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            image (Tensor): Tensor of shape (C x H x W)</span>
+<span class="sd">            bboxes (Tensor): Tensor of size (N, 4) containing bounding boxes in (xmin, ymin, xmax, ymax) format. Note that</span>
+<span class="sd">                the boxes are absolute coordinates with respect to the image. In other words: `0 &lt;= xmin &lt; xmax &lt; W` and</span>
+<span class="sd">                `0 &lt;= ymin &lt; ymax &lt; H`.</span>
+<span class="sd">            labels (List[str]): List containing the labels of bounding boxes.</span>
+<span class="sd">            colors (List[Union[str, Tuple[int, int, int]]]): List containing the colors of bounding boxes. The colors can</span>
+<span class="sd">                be represented as `str` or `Tuple[int, int, int]`.</span>
+<span class="sd">            width (int): Width of bounding box.</span>
+<span class="sd">            font (str): A filename containing a TrueType font. If the file is not found in this filename, the loader may</span>
+<span class="sd">                also search in other directories, such as the `fonts/` directory on Windows or `/Library/Fonts/`,</span>
+<span class="sd">                `/System/Library/Fonts/` and `~/Library/Fonts/` on macOS.</span>
+<span class="sd">            font_size (int): The requested font size in points.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tensor expected, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">image</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">image</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">torch</span><span class="o">.</span><span class="n">uint8</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tensor uint8 expected, got </span><span class="si">{</span><span class="n">image</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">image</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass individual images, not batches&quot;</span><span class="p">)</span>
+
+        <span class="n">ndarr</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="n">img_to_draw</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">ndarr</span><span class="p">)</span>
+
+        <span class="n">img_boxes</span> <span class="o">=</span> <span class="n">boxes</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img_to_draw</span><span class="p">)</span>
+
+        <span class="n">pixel_ratio</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">ndarr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ndarr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">//</span> <span class="mi">1000</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bbox</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">img_boxes</span><span class="p">):</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">colors</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span> <span class="o">*</span> <span class="n">pixel_ratio</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">txt_font</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">ImageFont</span><span class="o">.</span><span class="n">load_default</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">font</span> <span class="ow">is</span> <span class="kc">None</span>
+                    <span class="k">else</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">font_size</span> <span class="o">*</span> <span class="n">pixel_ratio</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">fill</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">txt_font</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img_to_draw</span><span class="p">))</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="n">img_to_draw</span>
+        <span class="p">)</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="fastnn.processors.cv.object_detection.ObjectDetectionProcessor.draw_bounding_boxes" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">draw_bounding_boxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">boxes</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s1">&#39;arial.ttf&#39;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span></code>
+
+
+<a href="#fastnn.processors.cv.object_detection.ObjectDetectionProcessor.draw_bounding_boxes" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Added and modified from TorchVision utils.
+Draws bounding boxes on given image.
+The values of the input image should be uint8 between 0 and 255.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>image</code></td>
+        <td><code>Tensor</code></td>
+        <td><p>Tensor of shape (C x H x W)</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>bboxes</code></td>
+        <td><code>Tensor</code></td>
+        <td><p>Tensor of size (N, 4) containing bounding boxes in (xmin, ymin, xmax, ymax) format. Note that
+the boxes are absolute coordinates with respect to the image. In other words: <code>0 &lt;= xmin &lt; xmax &lt; W</code> and
+<code>0 &lt;= ymin &lt; ymax &lt; H</code>.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>labels</code></td>
+        <td><code>List[str]</code></td>
+        <td><p>List containing the labels of bounding boxes.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>colors</code></td>
+        <td><code>List[Union[str, Tuple[int, int, int]]]</code></td>
+        <td><p>List containing the colors of bounding boxes. The colors can
+be represented as <code>str</code> or <code>Tuple[int, int, int]</code>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>width</code></td>
+        <td><code>int</code></td>
+        <td><p>Width of bounding box.</p></td>
+        <td><code>1</code></td>
+      </tr>
+      <tr>
+        <td><code>font</code></td>
+        <td><code>str</code></td>
+        <td><p>A filename containing a TrueType font. If the file is not found in this filename, the loader may
+also search in other directories, such as the <code>fonts/</code> directory on Windows or <code>/Library/Fonts/</code>,
+<code>/System/Library/Fonts/</code> and <code>~/Library/Fonts/</code> on macOS.</p></td>
+        <td><code>&#39;arial.ttf&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>font_size</code></td>
+        <td><code>int</code></td>
+        <td><p>The requested font size in points.</p></td>
+        <td><code>10</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>fastnn/processors/cv/object_detection.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">draw_bounding_boxes</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">boxes</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">colors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">font</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;arial.ttf&quot;</span><span class="p">,</span>
+    <span class="n">font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">]:</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Added and modified from TorchVision utils.</span>
+<span class="sd">    Draws bounding boxes on given image.</span>
+<span class="sd">    The values of the input image should be uint8 between 0 and 255.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        image (Tensor): Tensor of shape (C x H x W)</span>
+<span class="sd">        bboxes (Tensor): Tensor of size (N, 4) containing bounding boxes in (xmin, ymin, xmax, ymax) format. Note that</span>
+<span class="sd">            the boxes are absolute coordinates with respect to the image. In other words: `0 &lt;= xmin &lt; xmax &lt; W` and</span>
+<span class="sd">            `0 &lt;= ymin &lt; ymax &lt; H`.</span>
+<span class="sd">        labels (List[str]): List containing the labels of bounding boxes.</span>
+<span class="sd">        colors (List[Union[str, Tuple[int, int, int]]]): List containing the colors of bounding boxes. The colors can</span>
+<span class="sd">            be represented as `str` or `Tuple[int, int, int]`.</span>
+<span class="sd">        width (int): Width of bounding box.</span>
+<span class="sd">        font (str): A filename containing a TrueType font. If the file is not found in this filename, the loader may</span>
+<span class="sd">            also search in other directories, such as the `fonts/` directory on Windows or `/Library/Fonts/`,</span>
+<span class="sd">            `/System/Library/Fonts/` and `~/Library/Fonts/` on macOS.</span>
+<span class="sd">        font_size (int): The requested font size in points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tensor expected, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">image</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">image</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">torch</span><span class="o">.</span><span class="n">uint8</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tensor uint8 expected, got </span><span class="si">{</span><span class="n">image</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">image</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass individual images, not batches&quot;</span><span class="p">)</span>
+
+    <span class="n">ndarr</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">img_to_draw</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">ndarr</span><span class="p">)</span>
+
+    <span class="n">img_boxes</span> <span class="o">=</span> <span class="n">boxes</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img_to_draw</span><span class="p">)</span>
+
+    <span class="n">pixel_ratio</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">ndarr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ndarr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">//</span> <span class="mi">1000</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bbox</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">img_boxes</span><span class="p">):</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">colors</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span> <span class="o">*</span> <span class="n">pixel_ratio</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">txt_font</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">ImageFont</span><span class="o">.</span><span class="n">load_default</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">font</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">font_size</span> <span class="o">*</span> <span class="n">pixel_ratio</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">fill</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">txt_font</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img_to_draw</span><span class="p">))</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="n">img_to_draw</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="fastnn.processors.cv.object_detection.ObjectDetectionProcessor.process" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dir_path</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">ConvertImageDtype</span><span class="p">())</span></code>
+
+
+<a href="#fastnn.processors.cv.object_detection.ObjectDetectionProcessor.process" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Generate torch <code>Dataset</code> object from list of file paths or image Tensors.
+This provides clear tensor input representations for compatible models.</p>
+<p>Returns a Dataset</p>
+<ul>
+<li><strong>dir_path</strong> - String path to directory of images you'd like to process</li>
+</ul>
+
+        <details class="quote">
+          <summary>Source code in <code>fastnn/processors/cv/object_detection.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">process</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">transforms</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">ConvertImageDtype</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dataset</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate torch `Dataset` object from list of file paths or image Tensors.</span>
+<span class="sd">    This provides clear tensor input representations for compatible models.</span>
+
+<span class="sd">    Returns a Dataset</span>
+
+<span class="sd">    * **dir_path** - String path to directory of images you&#39;d like to process</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">ImageDataset</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dataset</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="fastnn.processors.cv.object_detection.ObjectDetectionProcessor.process_batch" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">process_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dir_path</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">ConvertImageDtype</span><span class="p">(),</span> <span class="n">mini_batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">use_gpu</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+
+<a href="#fastnn.processors.cv.object_detection.ObjectDetectionProcessor.process_batch" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Generate torch <code>Dataloader</code> object from data directory path.
+This provides clear tensor input representations for compatible models.</p>
+<p>Returns a <code>Dataloader</code></p>
+<ul>
+<li><strong>dir_path</strong> - String path to directory of images you'd like to process</li>
+<li><strong>mini_batch_size</strong> - Batch size for inference</li>
+<li><strong>use_gpu</strong> - Bool for using gpu or cpu. If set True but no gpu devices available, model will default to using cpu</li>
+</ul>
+
+        <details class="quote">
+          <summary>Source code in <code>fastnn/processors/cv/object_detection.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">process_batch</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">transforms</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">ConvertImageDtype</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">),</span>
+    <span class="n">mini_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="n">use_gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate torch `Dataloader` object from data directory path.</span>
+<span class="sd">    This provides clear tensor input representations for compatible models.</span>
+
+<span class="sd">    Returns a `Dataloader`</span>
+
+<span class="sd">    * **dir_path** - String path to directory of images you&#39;d like to process</span>
+<span class="sd">    * **mini_batch_size** - Batch size for inference</span>
+<span class="sd">    * **use_gpu** - Bool for using gpu or cpu. If set True but no gpu devices available, model will default to using cpu</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;GPU not available&quot;</span><span class="p">)</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+
+    <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">dir_path</span><span class="o">=</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">)</span>
+
+    <span class="c1"># Instead of a tensor batch, the lambda collate_fn will provide a list batch</span>
+    <span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+        <span class="n">dataset</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">mini_batch_size</span><span class="p">,</span>
+        <span class="n">collate_fn</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[[</span><span class="n">t</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_od_collate_fn</span><span class="p">(</span><span class="n">x</span><span class="p">)]],</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dataloader</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="fastnn.processors.cv.object_detection.ObjectDetectionProcessor.process_output_batch" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">process_output_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span></code>
+
+
+<a href="#fastnn.processors.cv.object_detection.ObjectDetectionProcessor.process_output_batch" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Process output of object detection model into human legible results.
+Outputs from <code>FasterRCNNModule</code></p>
+<p>Returns batched results of list of list of tuples containing boxed images in tensor and numpy format</p>
+<ul>
+<li><strong>outputs</strong> - List of batch output tensors from a model's forward pass</li>
+<li><strong>dataset</strong> - Corresponding dataset with originial images matched with model outputs</li>
+</ul>
+
+        <details class="quote">
+          <summary>Source code in <code>fastnn/processors/cv/object_detection.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">process_output_batch</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]],</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process output of object detection model into human legible results.</span>
+<span class="sd">    Outputs from `FasterRCNNModule`</span>
+
+
+<span class="sd">    Returns batched results of list of list of tuples containing boxed images in tensor and numpy format</span>
+
+<span class="sd">    * **outputs** - List of batch output tensors from a model&#39;s forward pass</span>
+<span class="sd">    * **dataset** - Corresponding dataset with originial images matched with model outputs</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Labeled Images</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">out</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">outputs</span><span class="p">):</span>
+        <span class="n">labeled_images</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">label_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">),</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">label_strings</span><span class="p">[</span><span class="n">o</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">out</span><span class="p">[</span><span class="n">label_idx</span><span class="p">]]</span>
+
+            <span class="n">unique_labels</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+            <span class="n">label_colors_map</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">unique_labels</span><span class="p">:</span>
+                <span class="n">label_colors_map</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+                <span class="p">)</span>
+
+            <span class="n">label_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">label_colors_map</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span>
+
+            <span class="n">output_tensor</span><span class="p">,</span> <span class="n">output_numpy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_bounding_boxes</span><span class="p">(</span>
+                <span class="n">ConvertImageDtype</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">uint8</span><span class="p">)(</span>
+                    <span class="n">dataset</span><span class="p">[</span><span class="n">idx</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="o">//</span> <span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">label_idx</span> <span class="o">//</span> <span class="mi">3</span><span class="p">]</span>
+                <span class="p">),</span>
+                <span class="n">out</span><span class="p">[</span><span class="n">label_idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+                <span class="n">colors</span><span class="o">=</span><span class="n">label_colors</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">labeled_images</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">output_tensor</span><span class="p">,</span> <span class="n">output_numpy</span><span class="p">))</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">labeled_images</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.aecac24b.min.js"></script>
+      
+    
+  </body>
+</html>
