@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/cuda:10.2-devel-ubuntu18.04 as base
+FROM nvcr.io/nvidia/cuda:12.2.2-devel-ubuntu22.04 as base
 
 LABEL maintainer="Andrew Chang <aychang995@gmail.com>"
 
@@ -16,44 +16,53 @@ ENV PYTHONUNBUFFERED=1 \
     \
     # poetry
     # https://python-poetry.org/docs/configuration/#using-environment-variables
-    POETRY_VERSION=1.1.4 \
+    POETRY_VERSION=1.6.1 \
     # make poetry install to this location
     POETRY_HOME="/opt/poetry" \
-    # make poetry create the virtual environment in the project's root
-    # it gets named `.venv`
-    POETRY_VIRTUALENVS_IN_PROJECT=true \
+    # don't create poetry venv, we make it ourselves
+    POETRY_VIRTUALENVS_CREATE=false \
     # do not ask any interactive question
     POETRY_NO_INTERACTION=1 \
     \
     # paths
     # this is where our requirements + virtual environment will live
     PYSETUP_PATH="/opt/pysetup" \
-    VENV_PATH="/opt/pysetup/.venv"
+    VIRTUAL_ENV="/venv"
 
 # prepend poetry and venv to path
-ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
+ENV PATH="$POETRY_HOME/bin:$VIRTUAL_ENV/bin:$PATH"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
-    python3.8 \
-    python3.8-dev \
+    python3.10 \
+    python3.10-dev \
+    python3.10-venv \
     python3-pip \
     curl
+
+# create virtualenv
+RUN python3 -m venv $VIRTUAL_ENV
 
 RUN rm -rf /var/lib/apt/lists/*
 
 RUN rm -fr /root/.cache/pip
 
 # install poetry - respects $POETRY_VERSION & $POETRY_HOME
-RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python3
+RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN poetry config installer.max-workers 10
 
 # copy project requirement files here to ensure they will be cached.
 WORKDIR $PYSETUP_PATH
-COPY . ./
+COPY poetry.lock pyproject.toml README.md $PYSETUP_PATH
+COPY src ./src
 
-# install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
-RUN poetry install --no-dev
+# install runtime deps
+RUN poetry install
 
+
+###########################
+#### Development Layer ####
+###########################
 FROM base as development
 
 ENV FASTAPI_ENV=development
@@ -65,6 +74,3 @@ COPY --from=base $PYSETUP_PATH $PYSETUP_PATH
 
 # quicker install as runtime deps are already installed
 RUN poetry install --extras "jupyter torch docs"
-
-
-CMD ["sh","-c", "jupyter notebook --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.token='' --NotebookApp.password='' --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}"]

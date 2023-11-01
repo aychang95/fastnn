@@ -2,7 +2,7 @@ services:
   jupyter:
     build:
       context: .
-      dockerfile: ./docker/runtime/Dockerfile.cuda11.6.0-runtime-ubuntu20.04-py3.8
+      dockerfile: ./docker/runtime/Dockerfile.cuda12.2.2-runtime-ubuntu22.04-py3.10
     deploy:
       resources:
         reservations:
@@ -11,14 +11,8 @@ services:
               count: 1
               capabilities: [gpu]
     ports:
-      - "8890:8888"
+      - "8888:8888"
+    command: ["sh","-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.token='' --NotebookApp.password='' --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}"]
     volumes:
-      - ./src:/opt/pysetup/src
-      - ./poetry.lock:/opt/pysetup/poetry.lock
-      - ./pyproject.toml:/opt/pysetup/pyproject.toml
-      - ./notebooks:/opt/pysetup/notebooks
-      - ./mkdocs.yml:/opt/pysetup/mkdocs.yml
-      - ./docs:/opt/pysetup/docs
-      - ./model_repository/:/opt/pysetup/model_repository
-      - ./README.md:/opt/pysetup/README.md
+      - ./:/opt/pysetup
   
