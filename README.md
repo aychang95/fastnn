@@ -22,7 +22,7 @@ A framework for deploying serializable and optimizable neural net models at scal
   - **Data Processing**
     - Intuitive data processing modules for encoding human-readible data into tensors compatible with deep learning libraries
   - **Model Exporting**
-    - FastNN torch modules and tools for exporting models via. `TorchScript` tracing and scripting to a production environment
+    - FastNN torch modules and tools for exporting models via. `TorchScript` tracing and scripting to a production environment. Now includes Text Generation.
   - **Model Zoo**
     - Various exported models hosted in this repo via. git-lfs and AWS S3. Includes models from the HuggingFace's Transformers and 
     TorchVision
