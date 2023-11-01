@@ -60,7 +60,7 @@ git lfs pull
 
 ### *Pre-requisites:*
 
-Requirements: Python 3.7+, PyTorch 1+, TorchVision 0.7+, Triton Client
+Requirements: Python 3.9+, PyTorch 2+, Triton Client
 
 Optional: CUDA Compatible GPU, NVIDIA Drivers, cudnn (PyTorch pre-built wheels)
 
